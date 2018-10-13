@@ -1,0 +1,6 @@
+[requires]
+glm/0.9.9.0@g-truc/stable
+catch2/2.4.0@bincrafters/stable
+
+[generators]
+cmake
