@@ -103,7 +103,15 @@ public:
                 d2 = tmpd;
             }
 
-            // assume a is on one side
+            // Assume a is on one side
+            //     c     b
+            //     +-----+
+            //     |    /
+            //   C |___/ B        Plane cuts triangle and produces two new points B and C
+            //     |  /
+            //     | /
+            //     |/
+            //     a
             auto & a = *p0;
             auto & b = *p1;
             auto & c = *p2;
@@ -135,28 +143,6 @@ public:
     }
 
 
-    /**
-     * @brief intersection_point
-     * @param plane
-     * @return
-     *
-     * Returns the intersection point of this linesegment with the plane.
-     *
-     */
-    point_type intersection_point( plane_type const & plane) const
-    {
-        const auto v = m_point[1]-m_point[0];
-        //const auto d = plane.distance( m_point[0] );
-        const auto t = glm::dot(  plane.m_normal, plane.m_point-m_point[0]) / glm::dot( plane.m_normal, v);
-        return m_point[0] + t*v;
-    }
-
-
-
-    void print() const
-    {
-        std::cout << *this << std::endl;
-    }
 };
 
 
