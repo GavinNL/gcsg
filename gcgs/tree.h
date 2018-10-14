@@ -63,6 +63,7 @@ public:
     using plane_type = typename face_t::plane_type;  //  plane              line
     using point_type = typename face_t::point_type;
 
+    using tree_type = Tree<N, face_t>;
     using node_type = Node<face_type, plane_type, point_type>;
 
     std::unique_ptr<node_type> m_root;
@@ -71,7 +72,9 @@ public:
      * @brief add
      * @param T
      *
-     * Adds a face to the Tree
+     * Adds a face to the Tree. Any changes added using this method should be a
+     * a valid face on the surface. that is, the face should not intersect any other
+     * faces within the surface.
      */
     void add(face_type const & T)
     {
@@ -91,12 +94,24 @@ public:
         }
     }
 
+
+    void partition( face_type const & T, tree_type & inside, tree_type & outside)
+    {
+        __partition( m_root.get(), T, inside, outside);
+    }
+
     template<typename callable>
     void for_each( callable c)
     {
         if( m_root.get() ) __for_each( m_root.get(), c);
     }
 
+
+    /**
+     * @brief print
+     *
+     * Prints all the faces in the tree to std out
+     */
     void print()
     {
         if( m_root.get() )
@@ -116,8 +131,83 @@ protected:
     {
         if(n->m_back.get())  __print(n->m_back.get());
         if(n->m_front.get()) __print(n->m_front.get());
-        n->m_face.print();
+        std::cout << n->m_face << std::endl;
     }
+
+    static void __partition(node_type * n, face_type const & T, tree_type & inside, tree_type & outside)
+    {
+        #if defined GCGS_USE_SPDLOG
+            static auto log = CREATE_LOGGER("Tree::__partition");
+            log->set_level(spdlog::level::debug);
+        #endif
+
+        assert( n );
+        auto & face  = n->m_face;
+        auto & plane = n->m_plane;
+
+        // Distance between point and plane
+        std::array<float, N> f;
+
+        uint32_t i=0;
+        bool all_inside  = true;
+        bool all_outside = true;
+
+        for(auto & _f : f)
+        {
+            _f = plane.distance( T[i++]);
+            if (fabs(_f) < EPSILON ) _f = 0.0f;
+
+            all_inside  &= _f <= 0;
+            all_outside &= _f >= 0;
+        }
+
+        auto & m_back  = n->m_back;
+        auto & m_front = n->m_front;
+        if(all_inside) //if( f0 <= 0 && f1 <= 0 && f2 <= 0 )
+        {
+            _DEBUG(log, "{} is behind {}", T, face);
+            if( !m_back.get() )
+                inside.add(T);
+            else
+                __partition(n->m_back.get(), T, inside, outside);
+        }
+        else if(all_outside) //( f0 >= 0 && f1 >= 0 && f2 >= 0 )
+        {
+            _DEBUG(log, "{} is in front of{}", T, face);
+            if( !m_front.get() )
+            {
+                outside.add(T);
+            }
+            else
+            {
+                __partition(n->m_front.get(), T, inside, outside);
+            }
+        }
+        else // the face spans the dividing plane.
+        {
+            //std::cout << T << " is split by " << face << std::endl;
+            std::vector<face_type> inside_faces;
+            std::vector<face_type> outside_faces;
+
+            // split the face and return a vector of face inside and outside the plane
+            //std::cout << "Splitting Line: " << T << std::endl;
+            T.split( plane, inside_faces, outside_faces);
+            for(auto & i : inside_faces)
+                _DEBUG(log, "  inside: {}" ,i);
+            for(auto & i : outside_faces)
+                _DEBUG(log, "  outside: {}" ,i);
+
+            for(auto & t : inside_faces)
+            {
+                __partition(n, t, inside, outside);
+            }
+            for(auto & t : outside_faces)
+            {
+                __partition(n, t, inside, outside);
+            }
+        }
+    }
+
     static void __add(node_type * n, face_type const & T)
     {
         #if defined GCGS_USE_SPDLOG

@@ -17,7 +17,7 @@ auto box_mesh(float dx , float dy , float dz )
     std::vector< glm::vec3 > P;
     std::vector< uint32_t> I;
 
-    std::vector<triangle> T;
+    std::vector<gcgs::triangle> T;
 
     uint32_t i = 0;
     uint32_t j = 0;
@@ -65,11 +65,31 @@ auto box_mesh(float dx , float dy , float dz )
 
      for(int i=0 ; i < P.size(); i+=3)
      {
-         T.push_back( triangle(P[i], P[i+1], P[i+2] ));
+         T.push_back( gcgs::triangle{ P[i], P[i+1], P[i+2] } );
      }
     return T;
 
 
+}
+
+
+
+std::vector<gcgs::line_segment> get_circle(float R, glm::vec2 offset = glm::vec2(0,0), uint32_t N=10)
+{
+    std::vector<gcgs::line_segment> b;
+    float t = 0.0;
+    float dt = 3.141592653589 * 2.0 / N;
+    for(uint32_t i=0;i<N;i++)
+    {
+        auto c  = R * cos(t);
+        auto s =  R * sin(t);
+
+        auto c2  =  R * cos(t + dt);
+        auto s2  =  R * sin(t + dt);
+        b.push_back( { glm::vec2{c2, s2}, glm::vec2{c, s}} );
+        t += dt;
+    }
+    return b;
 }
 
 
@@ -96,25 +116,42 @@ int main()
     using namespace gcgs;
 
 
-    Tree<2, line_segment> test;
+    Tree<2, line_segment> S1;
+    Tree<2, line_segment> S2;
 
-    auto B1 = get_box(1,glm::vec2(0));
+
+    Tree<2, line_segment> inside;
+    Tree<2, line_segment> outside;
+
+    auto B1 = get_circle(1.0, glm::vec2(0.0), 20);//get_box(1,glm::vec2(0));
+    //auto B1 = get_box(1,glm::vec2(0));
     auto B2 = get_box(1,glm::vec2(1,-1));
 
     for(auto & L : B1)
     {
-        test.add(L);
+        S1.add(L);
     }
     for(auto & L : B2)
     {
-        test.add(L);
+        S2.add(L);
     }
 
-   // std::cout << "Adding: " << B2[0] << std::endl;
-   //     test.add( B2[0]);
+    // would need to traverse S2 to get all the triangles instead
+    // of looping through B2.
+
+    S2.for_each(
+    [&](line_segment & L)
+    {
+        S1.partition(L, inside, outside);
+    });
+    S1.for_each(
+    [&](line_segment & L)
+    {
+        S2.partition(L, inside, outside);
+    });
 
     std::cout << "printing" << std::endl;
-    test.print();
+    outside.print();
     return 0;
 
 
