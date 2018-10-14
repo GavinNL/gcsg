@@ -190,10 +190,13 @@ protected:
             // split the face and return a vector of face inside and outside the plane
             //std::cout << "Splitting Line: " << T << std::endl;
             T.split( plane, inside_faces, outside_faces);
+
+#if defined GCGS_USE_SPDLOG
             for(auto & i : inside_faces)
                 _DEBUG(log, "  inside: {}" ,i);
             for(auto & i : outside_faces)
                 _DEBUG(log, "  outside: {}" ,i);
+#endif
 
             for(auto & t : inside_faces)
             {
