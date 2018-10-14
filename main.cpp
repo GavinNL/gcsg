@@ -111,6 +111,18 @@ std::vector<gcgs::line_segment> get_box(float s, glm::vec2 offset = glm::vec2(0,
 }
 
 
+void print_line_segments( gcgs::Tree<2, gcgs::line_segment> & T)
+{
+    using namespace gcgs;
+
+    T.for_each(
+    [&](line_segment & L)
+    {
+        printf("%f %f %f %f\n", L[0].x,L[0].y,L[1].x,L[1].y);
+    });
+}
+
+
 int main()
 {
     using namespace gcgs;
@@ -151,7 +163,9 @@ int main()
     });
 
     std::cout << "printing" << std::endl;
-    outside.print();
+
+    print_line_segments(outside);
+
     return 0;
 
 
