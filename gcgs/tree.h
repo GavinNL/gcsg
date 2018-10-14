@@ -90,10 +90,26 @@ public:
             __add(m_root.get(), T);
         }
     }
+
+    template<typename callable>
+    void for_each( callable c)
+    {
+        if( m_root.get() ) __for_each( m_root.get(), c);
+    }
+
     void print()
     {
         if( m_root.get() )
             __print( m_root.get() );
+    }
+
+protected:
+    template<typename callable>
+    static void __for_each(node_type * n, callable c)
+    {
+        c(n->m_face);
+        if( n->m_back.get() ) __for_each( n->m_back.get(), c);
+        if( n->m_front.get() ) __for_each( n->m_front.get(), c);
     }
 
     static void __print(node_type * n)
