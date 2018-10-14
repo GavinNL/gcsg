@@ -8,8 +8,6 @@
 #include <iostream>
 #include <vector>
 
-
-#include <glm/glm.hpp>
 #include "hyperplane.h"
 #include "log.h"
 

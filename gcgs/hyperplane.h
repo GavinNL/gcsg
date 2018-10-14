@@ -2,7 +2,7 @@
 #ifndef GCGS_HYPERPLANE
 #define GCGS_HYPERPLANE
 
-#include <glm/glm.hpp>
+#include "vec.h"
 
 namespace gcgs
 {
@@ -16,8 +16,8 @@ template<uint32_t dim>
 class hyperplane
 {
 public:
-    using point_type  = glm::vec<dim, float, glm::highp>;//glm::vec2;
-    using normal_type = glm::vec<dim, float, glm::highp>;//glm::vec2;
+    using point_type  = vec<dim>;
+    using normal_type = vec<dim>;
 
     /**
      * @brief distance

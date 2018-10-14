@@ -2,7 +2,6 @@
 #ifndef CGCS_LINE_SEGMENT_H
 #define CGCS_LINE_SEGMENT_H
 
-#include <glm/glm.hpp>
 #include "hyperplane.h"
 
 #include <ostream>
@@ -26,7 +25,8 @@ class line_segment
 {
 public:
     using plane_type      = hyperplane<2>;
-    using point_type      = glm::vec2;
+    using point_type      = vec<2>;
+    using normal_type     = vec<2>;
 
     point_type m_point[2];
 
@@ -53,7 +53,7 @@ public:
     plane_type get_hyperplane() const
     {
         const auto d = m_point[1] - m_point[0];
-        const auto n = glm::vec2{ -d.y, d.x};
+        const auto n = normal_type{ -d.y, d.x};
         return plane_type( m_point[1] , n );
     }
 

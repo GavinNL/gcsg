@@ -2,7 +2,6 @@
 #ifndef CGCS_TRIANGLE_H
 #define CGCS_TRIANGLE_H
 
-#include <glm/glm.hpp>
 #include "hyperplane.h"
 
 #include <ostream>
@@ -26,7 +25,8 @@ class triangle
 {
 public:
     using plane_type      = hyperplane<3>;
-    using point_type      = glm::vec3;
+    using point_type      = vec<3>;
+    using normal_type     = vec<3>;
 
     point_type m_point[3];
 
