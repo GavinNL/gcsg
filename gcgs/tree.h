@@ -66,6 +66,43 @@ public:
 
     std::unique_ptr<node_type> m_root;
 
+    Tree()
+    {
+
+    }
+    Tree(tree_type const & other)
+    {
+        std::cout << "Copying" << std::endl;
+        other.for_each(
+        [&](face_type const & L)
+        {
+            add(L);
+        });
+    }
+
+    tree_type & operator=(tree_type const & other)
+    {
+        if( &other != this)
+        {
+            other.for_each(
+            [&](face_type const & L)
+            {
+                add(L);
+            });
+        }
+        return *this;
+    }
+
+
+    tree_type & operator=(tree_type && other)
+    {
+        if( &other != this)
+        {
+            m_root = std::move( other.m_root);
+        }
+        return *this;
+    }
+
     /**
      * @brief add
      * @param T
@@ -104,7 +141,11 @@ public:
         if( m_root.get() ) __for_each( m_root.get(), c);
     }
 
-
+    template<typename callable>
+    void for_each( callable c) const
+    {
+        if( m_root.get() ) __for_each( m_root.get(), c);
+    }
     /**
      * @brief print
      *
@@ -119,6 +160,14 @@ public:
 protected:
     template<typename callable>
     static void __for_each(node_type * n, callable c)
+    {
+        c(n->m_face);
+        if( n->m_back.get() ) __for_each( n->m_back.get(), c);
+        if( n->m_front.get() ) __for_each( n->m_front.get(), c);
+    }
+
+    template<typename callable>
+    static void __for_each(node_type const * n, callable c)
     {
         c(n->m_face);
         if( n->m_back.get() ) __for_each( n->m_back.get(), c);
@@ -314,6 +363,8 @@ protected:
         }
     }
 };
+
+
 
 }
 
