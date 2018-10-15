@@ -110,7 +110,7 @@ public:
         return *this;
     }
 
-    tree_type Union(tree_type & S2)
+    tree_type Union(tree_type const & S2) const
     {
         using namespace gcgs;
 
@@ -120,12 +120,12 @@ public:
         // would need to traverse S2 to get all the triangles instead
         // of looping through B2.
         S2.for_each(
-        [&](face_type & L)
+        [&](face_type const & L)
         {
             partition(L, inside, outside);
         });
         for_each(
-        [&](face_type & L)
+        [&](face_type const & L)
         {
             S2.partition(L, inside, outside);
         });
@@ -133,7 +133,7 @@ public:
         return outside;
     }
 
-    tree_type Intersect(tree_type & S2)
+    tree_type Intersect(tree_type const & S2) const
     {
         using namespace gcgs;
 
@@ -143,12 +143,12 @@ public:
         // would need to traverse S2 to get all the triangles instead
         // of looping through B2.
         S2.for_each(
-        [&](face_type & L)
+        [&](face_type const & L)
         {
             partition(L, inside, outside);
         });
         for_each(
-        [&](face_type & L)
+        [&](face_type const & L)
         {
             S2.partition(L, inside, outside);
         });
@@ -194,7 +194,7 @@ public:
     }
 
 
-    void partition( face_type const & T, tree_type & inside, tree_type & outside)
+    void partition( face_type const & T, tree_type & inside, tree_type & outside) const
     {
         __partition( m_root.get(), T, inside, outside);
     }
@@ -245,7 +245,7 @@ protected:
         std::cout << n->m_face << std::endl;
     }
 
-    static void __partition(node_type * n, face_type const & T, tree_type & inside, tree_type & outside)
+    static void __partition(node_type const * n, face_type const & T, tree_type & inside, tree_type & outside)
     {
         #if defined GCGS_USE_SPDLOG
         auto log = get_logger();
