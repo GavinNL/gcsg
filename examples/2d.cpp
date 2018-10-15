@@ -2,7 +2,7 @@
 #include <glm/glm.hpp>
 #include <array>
 #include <memory>
-#include<vector>
+#include <vector>
 #include <cstdint>
 
 #include<gcgs/hyperplane.h>
@@ -32,9 +32,6 @@ int main()
     Tree<2, line_segment> S1;
     Tree<2, line_segment> S2;
 
-    Tree<2, line_segment> inside;
-    Tree<2, line_segment> outside;
-
     auto B1 = geo2d::get_circle(1.0, glm::vec2(0.0), 20);//get_box(1,glm::vec2(0));
     auto B2 = geo2d::get_box(1,glm::vec2(1,-1));
 
@@ -48,19 +45,7 @@ int main()
     }
 
     auto S3 = S1.Union(S2);
-    // would need to traverse S2 to get all the triangles instead
-    // of looping through B2.
 
-    S2.for_each(
-    [&](line_segment & L)
-    {
-        S1.partition(L, inside, outside);
-    });
-    S1.for_each(
-    [&](line_segment & L)
-    {
-        S2.partition(L, inside, outside);
-    });
 
     print_line_segments(S3);
 
