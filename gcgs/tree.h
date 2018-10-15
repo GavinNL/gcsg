@@ -156,6 +156,11 @@ public:
         return inside;
     }
 
+    tree_type Difference(tree_type const & S2) const
+    {
+        return Intersect( S2.Invert() );
+    }
+
     tree_type Invert() const
     {
         tree_type ret;
