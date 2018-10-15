@@ -90,29 +90,57 @@ public:
         }
         else
         {
+            // This algorithm of splitting a triangle into 3 by a dividing plane only works
+            // if point_0 is on one side of the dividing plane and the other two points are on
+            // the other side of the plane.
+
+            // We will use pointers to the points to rearrage the points so that
+            // only point 0 is on one side.
+
             auto * p0 = &m_point[0];
             auto * p1 = &m_point[1];
             auto * p2 = &m_point[2];
 
-            while( !(std::signbit(d1) == std::signbit(d2) && std::signbit(d0)!=std::signbit(d1)) )
+            auto * D0 = &d0;
+            auto * D1 = &d1;
+            auto * D2 = &d2;
+
+            // create a 3-bit code which indicates which points are on which side of the plane
+            // a bit value of 0 indicates it's on the positive side of the plane.
+            auto code = std::signbit(d0)*1 + std::signbit(d1)*2 + std::signbit(d2)*4;
+            switch(code)
             {
-                auto * tmp = p0;
-                p0 = p1;
-                p1 = p2;
-                p2 = tmp;
+                case 1: // point 0 is on one side and point 1 and 2 are on the other
+                case 6:
+                    p0 = &m_point[0];
+                    p1 = &m_point[1];
+                    p2 = &m_point[2];
 
-                auto tmpd = d0;
-                d0 = d1;
-                d1 = d2;
-                d2 = tmpd;
+                    D0 = &d0; D1 = &d1; D2 = &d2;
+                    break;
+                case 2: // point 1 is on one side, and point 0 and 2 are on the other
+                case 5:
+                    p0 = &m_point[1];
+                    p1 = &m_point[2];
+                    p2 = &m_point[0];
+                    D0 = &d1; D1 = &d2; D2 = &d0;
+                    break;
+                case 4: // point 2 is on one side, and point 0 and 1 are on the other side.
+                case 3:
+                    p0 = &m_point[2];
+                    p1 = &m_point[0];
+                    p2 = &m_point[1];
+                    D0 = &d2; D1 = &d0; D2 = &d1;
+                    break;
+                default:
+                    assert(0); // this should never happen!
+
             }
-
             // Assume a is on one side
             //     c     b
-            //     +-----+
-            //     |    /
-            //   C |___/ B        Plane cuts triangle and produces two new points B and C
-            //     |  /
+            //     +----+
+            //     |\  /
+            //   C |_\/ B        Plane cuts triangle and produces two new points B and C
             //     | /
             //     |/
             //     a
@@ -130,7 +158,7 @@ public:
             assert( !std::isnan(t1) );
             assert( !std::isnan(t2) );
 
-            if( d0 < 0)
+            if( *D0 < 0)
             {
                 below.push_back( triangle{a,B,C});
                 above.push_back( triangle{c,C,B});
