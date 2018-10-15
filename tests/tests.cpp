@@ -29,6 +29,13 @@ SCENARIO( "Line-Segment Hyperplanes" ) {
             auto h1 = ab.get_hyperplane();
             auto h2 = ba.get_hyperplane();
 
+            auto h3 = ab.invert().get_hyperplane().m_normal;
+
+            THEN("The Inverted line segment has a negative normal")
+            {
+                REQUIRE( h3[0] == Approx(-h1.m_normal[0]) );
+                REQUIRE( h3[1] == Approx(-h1.m_normal[1]) );
+            }
             THEN("The Normals are negative of each other")
             {
                 REQUIRE( glm::length( h1.normal() - glm::vec2(0, 1)) == Approx( 0.0 ));
@@ -188,6 +195,16 @@ SCENARIO( "Triangle Hyperplanes" ) {
 
         gcgs::triangle abc{a,b,c};
 
+        WHEN("The Triangle is inverted")
+        {
+            auto Ti = abc.invert();
+            auto Pi = Ti.get_hyperplane();
+            auto P  = abc.get_hyperplane();
+
+            REQUIRE( Pi.m_normal[0] == Approx(-P.m_normal[0]) );
+            REQUIRE( Pi.m_normal[1] == Approx(-P.m_normal[1]) );
+            REQUIRE( Pi.m_normal[2] == Approx(-P.m_normal[2]) );
+        }
         WHEN("The hyperplans are extracted")
         {
             auto h1 = abc.get_hyperplane();

@@ -57,6 +57,10 @@ public:
         return plane_type( m_point[0], n );
     }
 
+    triangle invert() const
+    {
+        return triangle{ m_point[0], m_point[2], m_point[1]};
+    }
     /**
      * @brief split
      * @param plane
