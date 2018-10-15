@@ -23,7 +23,7 @@ struct geo2d
 
             auto c2  =  R * cos(t + dt);
             auto s2  =  R * sin(t + dt);
-            b.push_back( { glm::vec2{c2, s2}, glm::vec2{c, s}} );
+            b.push_back( { glm::vec2{c2, s2}+offset, glm::vec2{c, s}+offset} );
             t += dt;
         }
         return b;
