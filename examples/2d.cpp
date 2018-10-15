@@ -13,7 +13,7 @@
 
 using namespace std;
 
-void print_line_segments( gcgs::Tree<2, gcgs::line_segment> & T)
+void print_line_segments( gcgs::Tree<2, gcgs::line_segment> const & T)
 {
     using namespace gcgs;
 
@@ -31,9 +31,15 @@ int main()
 
     Tree<2, line_segment> S1;
     Tree<2, line_segment> S2;
+    Tree<2, line_segment> S3;
 
     auto B1 = geo2d::get_circle(1.0, glm::vec2(0.0), 20);//get_box(1,glm::vec2(0));
     auto B2 = geo2d::get_box(1,glm::vec2(1,-1));
+    auto B3 = geo2d::get_circle(1.0, glm::vec2(2.0,-2), 20);//get_box(1,glm::vec2(0));
+
+    //auto B1 = geo2d::get_box(1,glm::vec2(0,0));
+    //auto B2 = geo2d::get_box(1,glm::vec2(2,0));
+    //auto B3 = geo2d::get_box(1,glm::vec2(4,0));
 
     for(auto & L : B1)
     {
@@ -43,11 +49,15 @@ int main()
     {
         S2.add(L);
     }
+    for(auto & L : B3)
+    {
+        S3.add(L);
+    }
 
-    auto S3 = S1.Union(S2);
+    auto S4 = S1.Union(S2).Union(S3);
 
-
-    print_line_segments(S3);
+    print_line_segments(  S4 );
 
     return 0;
 }
+

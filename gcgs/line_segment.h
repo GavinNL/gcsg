@@ -57,6 +57,10 @@ public:
         return plane_type( m_point[1] , n );
     }
 
+    line_segment invert() const
+    {
+        return line_segment{ m_point[1], m_point[0]};
+    }
     /**
      * @brief split
      * @param plane

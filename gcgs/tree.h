@@ -133,6 +133,41 @@ public:
         return outside;
     }
 
+    tree_type Intersect(tree_type & S2)
+    {
+        using namespace gcgs;
+
+        tree_type inside;
+        tree_type outside;
+
+        // would need to traverse S2 to get all the triangles instead
+        // of looping through B2.
+        S2.for_each(
+        [&](face_type & L)
+        {
+            partition(L, inside, outside);
+        });
+        for_each(
+        [&](face_type & L)
+        {
+            S2.partition(L, inside, outside);
+        });
+
+        return inside;
+    }
+
+    tree_type Invert() const
+    {
+        tree_type ret;
+        for_each(
+        [&](face_type & L)
+        {
+            ret.add( L.invert() );
+        });
+        return  ret;
+
+    }
+
     /**
      * @brief add
      * @param T
