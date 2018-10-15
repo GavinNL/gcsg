@@ -66,13 +66,20 @@ public:
 
     std::unique_ptr<node_type> m_root;
 
+#if defined GCGS_USE_SPDLOG
+    static auto get_logger()
+    {
+        static auto l = CREATE_LOGGER("Tree");
+        return l;
+    }
+#endif
+
     Tree()
     {
 
     }
     Tree(tree_type const & other)
     {
-        std::cout << "Copying" << std::endl;
         other.for_each(
         [&](face_type const & L)
         {
@@ -136,10 +143,9 @@ public:
      */
     void add(face_type const & T)
     {
-#if defined GCGS_USE_SPDLOG
-        static auto log = CREATE_LOGGER("Tree::add");
-        log->set_level(spdlog::level::debug);
-#endif
+        #if defined GCGS_USE_SPDLOG
+        auto log = get_logger();
+        #endif
 
         if( !m_root.get() )
         {
@@ -207,10 +213,8 @@ protected:
     static void __partition(node_type * n, face_type const & T, tree_type & inside, tree_type & outside)
     {
         #if defined GCGS_USE_SPDLOG
-            static auto log = CREATE_LOGGER("Tree::__partition");
-            log->set_level(spdlog::level::debug);
+        auto log = get_logger();
         #endif
-
         assert( n );
         auto & face  = n->m_face;
         auto & plane = n->m_plane;
@@ -283,10 +287,9 @@ protected:
 
     static void __add(node_type * n, face_type const & T)
     {
-        #if defined GCGS_USE_SPDLOG
-            static auto log = CREATE_LOGGER("Tree::__add");
-            log->set_level(spdlog::level::debug);
-        #endif
+#if defined GCGS_USE_SPDLOG
+auto log = get_logger();
+#endif
         auto & face  = n->m_face;
         auto & plane = n->m_plane;
 
@@ -345,10 +348,9 @@ protected:
 
     static void __add_front(node_type * n, face_type const & t)
     {
-        #if defined GCGS_USE_SPDLOG
-            static auto log = CREATE_LOGGER("Tree::__add_front");
-            log->set_level(spdlog::level::debug);
-        #endif
+#if defined GCGS_USE_SPDLOG
+auto log = get_logger();
+#endif
 
         auto & m_back  = n->m_back;
         auto & m_front = n->m_front;
@@ -366,10 +368,9 @@ protected:
 
     static void __add_back(node_type *n, face_type const & t)
     {
-        #if defined GCGS_USE_SPDLOG
-            static auto log = CREATE_LOGGER("Tree::__add_back");
-            log->set_level(spdlog::level::debug);
-        #endif
+#if defined GCGS_USE_SPDLOG
+auto log = get_logger();
+#endif
 
         auto & m_back  = n->m_back;
         auto & m_front = n->m_front;
