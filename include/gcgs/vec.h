@@ -4,13 +4,13 @@
 
 #include <glm/glm.hpp>
 
+#include<type_traits>
 
 namespace gcgs
 {
 
-template<int length>
-using vec = glm::vec<length, float, glm::highp>;
-
+template<uint32_t length>
+using vec =  typename std::conditional<length==2, glm::vec2, glm::vec3>::type;
 
 }
 
