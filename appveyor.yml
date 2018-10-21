@@ -1,0 +1,139 @@
+image:
+  - Visual Studio 2017
+
+environment:
+  matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      platform: x64
+      FLAGS: "/std:c++latest"
+      GENERATOR: Visual Studio 14 2015 Win64
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      platform: x64
+      FLAGS: "/permissive- /std:c++latest /utf-8"
+      GENERATOR: Visual Studio 15 2017 Win64
+
+
+clone_folder: c:\projects\source
+
+build_script:
+- cmd: >-
+    mkdir build
+
+    cd build
+
+    pip install --user conan
+
+    set PATH=%PATH%;C:\Users\appveyor\AppData\Roaming\Python\Scripts
+
+    conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+
+    conan install c:\projects\source --build
+
+    cmake c:\projects\source -G "%GENERATOR%" -DCMAKE_BUILD_TYPE:STRING=Release -DCPPBOILERPLATELIB_USE_CONAN:BOOL=TRUE
+
+    cmake --build . --config "Release"
+
+test_script:
+- cmd: ctest -C Release
+
+
+
+
+# version: '{build}'
+#
+# environment:
+#   matrix:
+# #   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+# #     COMPILER: mingw
+# #     platform: x86
+# #     FLAGS: ""
+# #     GENERATOR: Ninja
+# #
+# #   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+# #     platform: x86
+# #     FLAGS: ""
+# #     GENERATOR: Visual Studio 14 2015
+# #
+# #   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+# #     platform: x86
+# #     FLAGS: ""
+# #     GENERATOR: Visual Studio 15 2017
+# #
+# #   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+# #     platform: x86
+# #     FLAGS: "/permissive- /std:c++latest /utf-8"
+# #     GENERATOR: Visual Studio 15 2017
+# #
+# #   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+# #     platform: x64
+# #     FLAGS: ""
+# #     GENERATOR: Visual Studio 14 2015
+# #
+# #   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+# #     platform: x64
+# #     FLAGS: ""
+# #     GENERATOR: Visual Studio 15 2017
+#
+#     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#       platform: x64
+#       FLAGS: "/permissive- /std:c++latest /utf-8"
+#       GENERATOR: Visual Studio 15 2017
+#
+#
+# install:
+#   - if "%COMPILER%"=="mingw" appveyor DownloadFile https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip -FileName ninja.zip
+#   - if "%COMPILER%"=="mingw" 7z x ninja.zip -oC:\projects\deps\ninja > nul
+#   - if "%COMPILER%"=="mingw" set PATH=C:\projects\deps\ninja;%PATH%
+#   - if "%COMPILER%"=="mingw" set PATH=C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0\mingw64\bin;%PATH%
+#   - if "%COMPILER%"=="mingw" g++ --version
+#   - echo "Downloading conan..."
+#   - set PATH=%PATH%;%PYTHON%/Scripts/
+#   - pip.exe install conan
+#   - conan user # Create the conan data directory
+#   - conan --version
+#   - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+#
+# clone_folder: c:\projects\source
+# build_script:
+# - cmd: >-
+#     call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+#
+#     mkdir build
+#
+#     cd build
+#
+#     conan install c:\projects\source --build -s arch=x86_64
+#
+#     cmake c:\projects\source -DCMAKE_CXX_FLAGS="%FLAGS%" -G "%GENERATOR%" -DCPPBOILERPLATELIB_USE_CONAN:BOOL=TRUE
+#
+#     cmake --build . --config "Debug"
+#
+#
+# test_script:
+# - cmd: ctest -C Debug
+#
+#
+#
+#
+# #init:
+# #  - cmake --version
+# #  - msbuild /version
+# #
+# #install:
+# #  - if "%COMPILER%"=="mingw" appveyor DownloadFile https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip -FileName ninja.zip
+# #  - if "%COMPILER%"=="mingw" 7z x ninja.zip -oC:\projects\deps\ninja > nul
+# #  - if "%COMPILER%"=="mingw" set PATH=C:\projects\deps\ninja;%PATH%
+# #  - if "%COMPILER%"=="mingw" set PATH=C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0\mingw64\bin;%PATH%
+# #  - if "%COMPILER%"=="mingw" g++ --version
+# #
+# #before_build:
+# #  - cmake . -G "%GENERATOR%" -DCMAKE_CXX_FLAGS="%FLAGS%" -DCMAKE_IGNORE_PATH="C:/Program Files/Git/usr/bin"
+# #
+# #build_script:
+# #  - cmake --build . --config Release
+# #
+# #test_script:
+# #  - ctest -C Release -V -j
+#
+#
