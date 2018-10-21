@@ -1,5 +1,3 @@
-#include <boilerplate/boilerplate.h>
-
 namespace boilerplate
 {
 
