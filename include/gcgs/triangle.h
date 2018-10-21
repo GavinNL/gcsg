@@ -151,33 +151,40 @@ public:
             auto & b = *p1;
             auto & c = *p2;
 
-            const auto v1 = a-b;
-            const auto t1 = glm::dot(  plane.m_normal, plane.m_point-a) / glm::dot( plane.m_normal, v1);
-            auto B = a + t1*v1;
+            auto Bp = plane.intersection_point(a,b);
+            auto Cp = plane.intersection_point(a,c);
 
-            const auto v2 = a-c;
-            const auto t2 = glm::dot(  plane.m_normal, plane.m_point-c) / glm::dot( plane.m_normal, v2);
-            auto C = a + t2*v2;
+            auto & B = Bp.point;
+            auto & C = Cp.point;
+
+            auto t1 = Bp.t;
+            auto t2 = Cp.t;
+
             assert( !std::isnan(t1) );
             assert( !std::isnan(t2) );
+
+            assert( !std::isnan(B.x) );
+            assert( !std::isnan(B.y) );
+            assert( !std::isnan(B.z) );
+
+            assert( !std::isnan(C.x) );
+            assert( !std::isnan(C.y) );
+            assert( !std::isnan(C.z) );
 
             if( *D0 < 0)
             {
                 below.push_back( triangle{a,B,C});
-                above.push_back( triangle{c,C,B});
-                above.push_back( triangle{c,B,b});
+                if( t2 < 1) above.push_back( triangle{c,C,B});
+                if( t1 < 1 )above.push_back( triangle{c,B,b});
             }
             else
             {
                 above.push_back( triangle{a,B,C} );
-                below.push_back( triangle{c,C,B} );
-                below.push_back( triangle{c,B,b} );
+                if( t2 < 1) below.push_back( triangle{c,C,B} );
+                if( t1 < 1 )below.push_back( triangle{c,B,b} );
             }
-
         }
     }
-
-
 };
 
 
