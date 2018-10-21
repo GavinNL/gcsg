@@ -15,7 +15,7 @@
 cmake_minimum_required(VERSION 3.8)
 
 #CPPBOILERPLATELIB
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 17)
 
 
 option(BUILD_SHARED_LIBS "Enable compilation of shared libraries" OFF)
