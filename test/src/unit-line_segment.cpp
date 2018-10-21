@@ -8,7 +8,86 @@
 #include <gcgs/line_segment.h>
 
 
-SCENARIO( "Line-Segment Hyperplanes" ) {
+bool equal_points(glm::vec2 const &a, glm::vec2 const & b)
+{
+    return (Catch::Detail::Approx(a.x) == b.x) && (Catch::Detail::Approx(a.y) == b.y);
+}
+
+// checks if two triangles are equal:
+// abc == bca == bca
+bool equal_lines(gcgs::line_segment const & ab, gcgs::line_segment const & AB)
+{
+    return equal_points( ab[0], AB[0] ) && equal_points( ab[1], AB[1] );
+}
+
+// returns true if b is in the triangle abc
+bool contains_point(gcgs::line_segment const & ab, glm::vec2 const & b)
+{
+    return equal_points(ab[0], b) || equal_points(ab[1], b);
+}
+
+// returns the index the point is located at
+int point_index(gcgs::line_segment const & ab, glm::vec2 const & b)
+{
+    for(int i=0;i<2;i++)
+    {
+        if( equal_points(ab[i],b) )
+            return i;
+    }
+    return -1;
+}
+
+// given a triangle abc and two points from that triangle, return the third point
+glm::vec2 missing_point(gcgs::line_segment const & ab, glm::vec2 const & a )
+{
+    if( equal_points(ab[0],a) ) return ab[1];
+    if( equal_points(ab[1],a) ) return ab[0];
+}
+
+// two triangles are coplanar if their normals are the same
+bool are_parallel(gcgs::line_segment const & T1, gcgs::line_segment const & T2)
+{
+    return glm::length(
+                glm::normalize( T1[1]-T1[0]) - glm::normalize( T2[1]-T2[0])
+                ) == Catch::Detail::Approx(0.0f);
+}
+
+// two triangles are antiplanar if their normals are negatives of each other
+bool are_antiparallel(gcgs::line_segment const & T1, gcgs::line_segment const & T2)
+{
+    return glm::length(
+                glm::normalize( T1[1]-T1[0]) + glm::normalize( T2[1]-T2[0])
+                ) == Catch::Detail::Approx(0.0f);
+}
+
+SCENARIO( "Local tests" )
+{
+    GIVEN( "A line segment ab and ba" )
+    {
+        glm::vec2 a(-1, 0 );
+        glm::vec2 b(1 , 0 );
+
+
+
+        gcgs::line_segment ab{ a, b }; // the normal will always be the vector from point a to point b, rotated 90 counter-clockwisse
+        gcgs::line_segment ba{ b, a };
+
+        gcgs::line_segment AB{ 2.f*a, 2.f*b }; // the normal will always be the vector from point a to point b, rotated 90 counter-clockwisse
+
+        REQUIRE( are_antiparallel(ab,ba) );
+        REQUIRE( are_parallel(ab,AB) );
+
+        REQUIRE( contains_point(ab,a));
+        REQUIRE( contains_point(ab,b));
+
+        REQUIRE( equal_points( missing_point(ab,b), a) );
+        REQUIRE( equal_points( missing_point(ab,a), b) );
+
+    }
+}
+
+SCENARIO( "Line-Segment Hyperplanes" )
+{
 
     GIVEN( "A line segment ab and ba" )
     {
@@ -30,13 +109,12 @@ SCENARIO( "Line-Segment Hyperplanes" ) {
 
             THEN("The Inverted line segment has a negative normal")
             {
-                REQUIRE( h3[0] == Approx(-h1.m_normal[0]) );
-                REQUIRE( h3[1] == Approx(-h1.m_normal[1]) );
+                REQUIRE( equal_points(h3, -h1.m_normal) );
             }
             THEN("The Normals are negative of each other")
             {
-                REQUIRE( glm::length( h1.normal() - glm::vec2(0, 1)) == Approx( 0.0 ));
-                REQUIRE( glm::length( h2.normal() - glm::vec2(0,-1)) == Approx( 0.0 ));
+                REQUIRE( equal_points( h1.normal() , glm::vec2(0, 1)) );
+                REQUIRE( equal_points( h2.normal() , glm::vec2(0,-1)) );
             }
             THEN("Distance between the points and the hyerplans are zero")
             {
@@ -82,8 +160,11 @@ SCENARIO( "Line-Segment Hyperplane Intersections" ) {
         glm::vec2 c(0 ,-1 );
         glm::vec2 d(0 , 1 );
 
+        glm::vec2 origin(0.f);
+
         gcgs::line_segment ab{ a, b }; // the normal will always be the vector from point a to point b, rotated 90 counter-clockwisse
         gcgs::line_segment cd{ c, d };
+
 
         WHEN("The hyperplanes are extracted")
         {
@@ -93,12 +174,12 @@ SCENARIO( "Line-Segment Hyperplane Intersections" ) {
             THEN("The intersection point of ab and bd is the origin")
             {
                 auto intersection_point = ab.intersection_point(h2);
-                REQUIRE( glm::length( intersection_point) == Approx( 0.0 ));
+                REQUIRE( equal_points( intersection_point, glm::vec2(0) ) );
             }
             THEN("The intersection point of cd and ab is the origin")
             {
                 auto intersection_point = cd.intersection_point(h1);
-                REQUIRE( glm::length( intersection_point) == Approx( 0.0 ));
+                REQUIRE( equal_points( intersection_point, glm::vec2(0) ) );
             }
         }
     }
@@ -157,23 +238,31 @@ SCENARIO( "Splitting a Line-Segment" ) {
                 REQUIRE( Pcd.distance(outside[0][1]) >= 0.f );
             }
 
-            THEN("Both line segments have the name normal")
+            THEN("Both line segments are parallel")
             {
-                auto h1 = inside[0].get_hyperplane();
-                auto h2 = outside[0].get_hyperplane();
+                REQUIRE( are_parallel(inside[0], outside[0]) );
 
-                REQUIRE( glm::length(h1.normal()-h2.normal()) == Approx(0.0f));
-                REQUIRE( glm::length(h1.normal()-Pab.normal()) == Approx(0.0f));
+                REQUIRE( are_parallel(inside[0], ab) );
+                REQUIRE( are_parallel(outside[0], ab) );
             }
 
-            THEN("There is an intersection point on the plane cd")
+            THEN("point a is outside the plane, point b is inside the plane")
             {
-                REQUIRE( fabs(Pcd.distance(inside[0][0]) ) == Approx(0.0f) );
-                REQUIRE( fabs(Pcd.distance(inside[0][1]) ) != Approx(0.0f) );
+                REQUIRE( contains_point(outside[0],a));
+                REQUIRE( contains_point(inside[0] ,b));
+            }
+            THEN("A new point X is created on both line segments and is on the plane Pcd")
+            {
+                auto x = missing_point(inside[0] ,a);
+                auto X = missing_point(outside[0],b);
 
-                REQUIRE( fabs(Pcd.distance(outside[0][1]) ) == Approx(0.0f) );
-                REQUIRE( fabs(Pcd.distance(outside[0][0]) ) != Approx(0.0f) );
+                REQUIRE( equal_points(x,X));
+
+                REQUIRE( Pcd.distance(x) == Approx(0.0f));
+                REQUIRE( Pcd.distance(X) == Approx(0.0f));
+
             }
         }
     }
 }
+
