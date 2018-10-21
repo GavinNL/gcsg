@@ -102,8 +102,6 @@ public:
             auto * p2 = &m_point[2];
 
             auto * D0 = &d0;
-            auto * D1 = &d1;
-            auto * D2 = &d2;
 
             // create a 3-bit code which indicates which points are on which side of the plane
             // a bit value of 0 indicates it's on the positive side of the plane.
@@ -116,21 +114,21 @@ public:
                     p1 = &m_point[1];
                     p2 = &m_point[2];
 
-                    D0 = &d0; D1 = &d1; D2 = &d2;
+                    D0 = &d0; //D1 = &d1; D2 = &d2;
                     break;
                 case 2: // point 1 is on one side, and point 0 and 2 are on the other
                 case 5:
                     p0 = &m_point[1];
                     p1 = &m_point[2];
                     p2 = &m_point[0];
-                    D0 = &d1; D1 = &d2; D2 = &d0;
+                    D0 = &d1; //D1 = &d2; D2 = &d0;
                     break;
                 case 4: // point 2 is on one side, and point 0 and 1 are on the other side.
                 case 3:
                     p0 = &m_point[2];
                     p1 = &m_point[0];
                     p2 = &m_point[1];
-                    D0 = &d2; D1 = &d0; D2 = &d1;
+                    D0 = &d2; //D1 = &d0; D2 = &d1;
                     break;
                 default:
                     assert(0); // this should never happen!

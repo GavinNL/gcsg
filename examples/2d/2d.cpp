@@ -20,7 +20,7 @@ void print_line_segments( gcgs::Tree<2, gcgs::line_segment> const & T)
     T.for_each(
     [&](line_segment & L)
     {
-        printf("%f %f %f %f\n", L[0].x,L[0].y,L[1].x,L[1].y);
+        std::cout << L[0].x << ',' << L[0].y << ',' << L[1].x << ',' << L[1].y << '\n';
     });
 }
 

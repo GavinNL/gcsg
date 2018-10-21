@@ -66,8 +66,8 @@ public:
 
     std::unique_ptr<node_type> m_root;
 
-#if defined GCGS_USE_SPDLOG
-    static auto get_logger()
+#if defined GCSG_USE_SPDLOG
+    static std::shared_ptr<spdlog::logger> get_logger()
     {
         static auto l = CREATE_LOGGER("Tree");
         return l;
@@ -183,7 +183,7 @@ public:
      */
     void add(face_type const & T)
     {
-        #if defined GCGS_USE_SPDLOG
+        #if defined GCSG_USE_SPDLOG
         auto log = get_logger();
         #endif
 
@@ -252,17 +252,17 @@ protected:
 
     static void __partition(node_type const * n, face_type const & T, tree_type & inside, tree_type & outside)
     {
-        #if defined GCGS_USE_SPDLOG
+        #if defined GCSG_USE_SPDLOG
         auto log = get_logger();
+        auto & face = n->m_face;
         #endif
         assert( n );
-        auto & face  = n->m_face;
         auto & plane = n->m_plane;
 
         // Distance between point and plane
         std::array<float, N> f;
 
-        uint32_t i=0;
+        int32_t i=0;
         bool all_inside  = true;
         bool all_outside = true;
 
@@ -307,7 +307,7 @@ protected:
             //std::cout << "Splitting Line: " << T << std::endl;
             T.split( plane, inside_faces, outside_faces);
 
-#if defined GCGS_USE_SPDLOG
+#if defined GCSG_USE_SPDLOG
             for(auto & i : inside_faces)
                 _DEBUG(log, "  inside: {}" ,i);
             for(auto & i : outside_faces)
@@ -327,16 +327,16 @@ protected:
 
     static void __add(node_type * n, face_type const & T)
     {
-#if defined GCGS_USE_SPDLOG
+#if defined GCSG_USE_SPDLOG
 auto log = get_logger();
+        auto & face = n->m_face;
 #endif
-        auto & face  = n->m_face;
         auto & plane = n->m_plane;
 
         // Distance between point and plane
         std::array<float, N> f;
 
-        uint32_t i=0;
+        int32_t i=0;
         bool all_inside  = true;
         bool all_outside = true;
 
@@ -349,8 +349,6 @@ auto log = get_logger();
             all_outside &= _f >= 0;
         }
 
-        auto & m_back  = n->m_back;
-        auto & m_front = n->m_front;
         if(all_inside) //if( f0 <= 0 && f1 <= 0 && f2 <= 0 )
         {
             _DEBUG(log, "{} is behind {}", T, face);
@@ -370,10 +368,13 @@ auto log = get_logger();
             // split the face and return a vector of face inside and outside the plane
             //std::cout << "Splitting Line: " << T << std::endl;
             T.split( plane, inside_faces, outside_faces);
+
+            #if defined GCSG_USE_SPDLOG
             for(auto & i : inside_faces)
                 _DEBUG(log, "  inside: {}" ,i);
             for(auto & i : outside_faces)
                 _DEBUG(log, "  outside: {}" ,i);
+            #endif
 
             for(auto & t : inside_faces)
             {
@@ -388,11 +389,9 @@ auto log = get_logger();
 
     static void __add_front(node_type * n, face_type const & t)
     {
-#if defined GCGS_USE_SPDLOG
+#if defined GCSG_USE_SPDLOG
 auto log = get_logger();
 #endif
-
-        auto & m_back  = n->m_back;
         auto & m_front = n->m_front;
 
         if( !m_front.get() )
@@ -408,12 +407,11 @@ auto log = get_logger();
 
     static void __add_back(node_type *n, face_type const & t)
     {
-#if defined GCGS_USE_SPDLOG
+#if defined GCSG_USE_SPDLOG
 auto log = get_logger();
 #endif
 
         auto & m_back  = n->m_back;
-        auto & m_front = n->m_front;
 
         if( !m_back.get() )
         {

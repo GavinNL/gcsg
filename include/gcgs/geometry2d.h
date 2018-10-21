@@ -15,14 +15,14 @@ struct geo2d
     {
         std::vector<gcgs::line_segment> b;
         float t = 0.0;
-        float dt = 3.141592653589 * 2.0 / N;
+        float dt = 3.141592653589f * 2.0f / static_cast<float>(N);
         for(uint32_t i=0;i<N;i++)
         {
-            auto c  = R * cos(t);
-            auto s =  R * sin(t);
+            auto c  = R * std::cos(t);
+            auto s =  R * std::sin(t);
 
-            auto c2  =  R * cos(t + dt);
-            auto s2  =  R * sin(t + dt);
+            auto c2  =  R * std::cos(t + dt);
+            auto s2  =  R * std::sin(t + dt);
             b.push_back( { glm::vec2{c2, s2}+offset, glm::vec2{c, s}+offset} );
             t += dt;
         }

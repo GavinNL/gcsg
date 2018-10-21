@@ -24,6 +24,12 @@ option(BUILD_SHARED_LIBS "Enable compilation of shared libraries" OFF)
 option(GCSG_USE_CONAN "Use Conan to handle dependencies" ON)
 option(GCSG_ENABLE_COVERAGE "Enable Code Coverage flags" OFF)
 option(GCSG_BUILD_TESTS "Build Tests" ON)
+option(GCSG_ENABLE_SPDLOG "Enable Logging with spdlog" ON)
+
+
+if(GCSG_ENABLE_SPDLOG)
+    add_definitions(-DGCSG_USE_SPDLOG)
+endif()
 
 #########################################################
 FILE(GLOB TEXT_FILES  "*.yml" )
