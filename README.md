@@ -12,13 +12,13 @@ Dev:
 ![Codecov branch](https://img.shields.io/codecov/c/github/GavinNL/gcsg/dev.svg)
 ![Codacy branch grade](https://img.shields.io/codacy/grade/c19827f8039d4dd09b4f0671d8edb5bf/dev.svg)
 
-# Building
+## Building
 
 Requirements:
- *  The conan package manager must be installed on your system.
- *  matplotlib, and numpy must be installed to plot the points
+*  The conan package manager must be installed on your system.
+*  matplotlib, and numpy must be installed to plot the points
 
-```
+```C++
 git clone https://github.com/gavinNL/gcsg.git
 cd gscg
 mkdir build
