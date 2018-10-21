@@ -153,14 +153,14 @@ SCENARIO( "Splitting a Line-Segment" ) {
                 REQUIRE( Pcd.distance(inside[0][0]) <= 0.f );
                 REQUIRE( Pcd.distance(inside[0][1]) <= 0.f );
 
-                REQUIRE( Pcd.distance(inside[1][0]) <= 0.f );
-                REQUIRE( Pcd.distance(inside[1][1]) <= 0.f );
+                REQUIRE( Pcd.distance(outside[0][0]) >= 0.f );
+                REQUIRE( Pcd.distance(outside[0][1]) >= 0.f );
             }
 
             THEN("Both line segments have the name normal")
             {
                 auto h1 = inside[0].get_hyperplane();
-                auto h2 = inside[0].get_hyperplane();
+                auto h2 = outside[0].get_hyperplane();
 
                 REQUIRE( glm::length(h1.normal()-h2.normal()) == Approx(0.0f));
                 REQUIRE( glm::length(h1.normal()-Pab.normal()) == Approx(0.0f));
@@ -171,8 +171,8 @@ SCENARIO( "Splitting a Line-Segment" ) {
                 REQUIRE( fabs(Pcd.distance(inside[0][0]) ) == Approx(0.0f) );
                 REQUIRE( fabs(Pcd.distance(inside[0][1]) ) != Approx(0.0f) );
 
-                REQUIRE( fabs(Pcd.distance(outside[1][0]) ) == Approx(0.0f) );
-                REQUIRE( fabs(Pcd.distance(outside[1][1]) ) != Approx(0.0f) );
+                REQUIRE( fabs(Pcd.distance(outside[0][1]) ) == Approx(0.0f) );
+                REQUIRE( fabs(Pcd.distance(outside[0][0]) ) != Approx(0.0f) );
             }
         }
     }
