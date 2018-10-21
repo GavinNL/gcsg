@@ -15,7 +15,8 @@
 cmake_minimum_required(VERSION 3.8)
 
 #CPPBOILERPLATELIB
-set (CMAKE_CXX_STANDARD 17)
+set (CMAKE_CXX_STANDARD 11)
+add_definitions(-std=c++11)
 
 
 option(BUILD_SHARED_LIBS "Enable compilation of shared libraries" OFF)
@@ -179,6 +180,7 @@ if(CPPBOILERPLATELIB_USE_CONAN)
     #)
 
    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+   set(CONAN_SYSTEM_INCLUDES ON)
    conan_basic_setup()
 
    link_libraries(${CONAN_LIBS})
