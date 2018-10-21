@@ -120,6 +120,79 @@ public:
         return *this;
     }
 
+    /**
+     * @brief is_partitioned
+     * @param f
+     * @return
+     *
+     * Returns true if the tree splits the face, T
+     */
+    static bool is_partitioned(node_type * n,  face_type const & T)
+    {
+        // Distance between point and plane
+        std::array<float, N> f;
+
+        int32_t i=0;
+        int count=0;
+
+        auto & plane = n->m_plane;
+
+        for(auto & _f : f)
+        {
+            _f = plane.distance( T[i++]);
+            if (fabs(_f) < EPSILON ) _f = 0.0f;
+
+            count += _f <= 0;
+        }
+
+        if(count == 3 ) // all are inside
+        {
+            if( n->m_back) return is_partitioned(n->m_back.get(), T);
+        }
+        else if(count == 0) // all are outside
+        {
+            if( n->m_front) return is_partitioned(n->m_front.get(), T);
+        }
+        else // splits by some triangle within the tree
+        {
+            return true;
+        }
+    }
+
+    // returns the face that splits the
+    static face_type partitioning_face(node_type * n, face_type const & T)
+    {
+        // Distance between point and plane
+        std::array<float, N> f;
+
+        int32_t i=0;
+        int count=0;
+
+        auto & plane = n->m_plane;
+
+        for(auto & _f : f)
+        {
+            _f = plane.distance( T[i++]);
+            if (fabs(_f) < EPSILON ) _f = 0.0f;
+
+            count += _f <= 0;
+        }
+
+        if(count == 3 ) // all are inside
+        {
+            if( n->m_back) return partitioning_face(n->m_back.get(), T);
+        }
+        else if(count == 0) // all are outside
+        {
+            if( n->m_front) return partitioning_face(n->m_front.get(), T);
+        }
+        else // splits by some triangle within the tree
+        {
+            return n->m_face;
+        }
+        throw std::runtime_error("Does not intersect with another face");
+    }
+
     tree_type Union(tree_type const & S2) const
     {
         using namespace gcgs;
@@ -318,10 +391,17 @@ protected:
             T.split( plane, inside_faces, outside_faces);
 
 #if defined GCSG_USE_SPDLOG
+            _DEBUG(log, "=================" );
+            _DEBUG(log, "{} split by plane {}", T, plane);
             for(auto & i : inside_faces)
-                _DEBUG(log, "  inside: {}" ,i);
+            {
+                _DEBUG(log, "  inside: {}  area: {}" ,i, i.surface_area());
+            }
             for(auto & i : outside_faces)
-                _DEBUG(log, "  outside: {}" ,i);
+            {
+                _DEBUG(log, "  outside: {}  area: {}" ,i, i.surface_area());
+            }
+            _DEBUG(log, "=================" );
 #endif
 
             for(auto & t : inside_faces)
