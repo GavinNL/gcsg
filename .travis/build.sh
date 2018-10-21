@@ -29,15 +29,15 @@ conan install .. --build
 # compile and execute unit tests
 if [ "${RUN_CODECOV}" = "TRUE" ]; then 
     echo "Building with Code Coverage"
-    cmake ${CMAKE_OPTIONS} -GNinja -D CPPBOILERPLATELIB_USE_CONAN:BOOL=TRUE -D CPPBOILERPLATELIB_ENABLE_COVERAGE:BOOL=TRUE -D CPPBOILERPLATELIB_BUILD_TESTS:BOOL=TRUE ..
+    cmake ${CMAKE_OPTIONS} -GNinja -D GCSG_USE_CONAN:BOOL=TRUE -D GCSG_ENABLE_COVERAGE:BOOL=TRUE -D GCSG_BUILD_TESTS:BOOL=TRUE ..
     cmake --build . -- -j2
 else
     echo "Building without Code Coverage"
-    cmake ${CMAKE_OPTIONS} -GNinja -D CPPBOILERPLATELIB_USE_CONAN:BOOL=TRUE -D CPPBOILERPLATELIB_BUILD_TESTS:BOOL=TRUE  ..
+    cmake ${CMAKE_OPTIONS} -GNinja -D GCSG_USE_CONAN:BOOL=TRUE -D GCSG_BUILD_TESTS:BOOL=TRUE  ..
     cmake --build . -- -j2
 fi
 
-#   - CXX=/usr/bin/g++-7 CC=/usr/bin/gcc-7 cmake -D CPPBOILERPLATELIB_ENABLE_COVERAGE:BOOL=TRUE -D CPPBOILERPLATELIB_BUILD_TESTS:BOOL=TRUE ..
+#   - CXX=/usr/bin/g++-7 CC=/usr/bin/gcc-7 cmake -D GCSG_ENABLE_COVERAGE:BOOL=TRUE -D GCSG_BUILD_TESTS:BOOL=TRUE ..
 #   - cmake --build . -- -j2
 
 #ctest -C Release -V -j

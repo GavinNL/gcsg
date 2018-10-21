@@ -26,7 +26,7 @@ if(JSON_NoExceptions)
 endif()
 
 
-# if(CPPBOILERPLATELIB_BUILD_TESTS_COVERAGE)
+# if(GCSG_BUILD_TESTS_COVERAGE)
 #     message(STATUS "Building test suite with coverage information")
 #
 #     if(NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -112,12 +112,12 @@ foreach(file ${files})
         $<$<CXX_COMPILER_ID:GNU>:-Wno-deprecated-declarations>
     )
     target_include_directories(${testcase} PRIVATE
-        "${CPPBOILERPLATELIB_INCLUDE}"
+        "${GCSG_INCLUDE}"
         third_party/Catch2
     )
 
-    MESSAGE("         Adding link libraries for ${testcase}: ${CPPBOILERPLATE_LIBS}  ${CPPBOILERPLATELIB_COVERAGE_FLAGS} ")
-    target_link_libraries(${testcase} ${CPPBOILERPLATE_LIBS} ${CPPBOILERPLATELIB_COVERAGE_FLAGS})
+    MESSAGE("         Adding link libraries for ${testcase}: ${GCSG_LIBS}  ${GCSG_COVERAGE_FLAGS} ")
+    target_link_libraries(${testcase} ${GCSG_LIBS} ${GCSG_COVERAGE_FLAGS})
 
 
     add_test(NAME "${testcase}_default"

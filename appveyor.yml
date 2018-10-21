@@ -30,7 +30,7 @@ build_script:
 
     conan install c:\projects\source --build
 
-    cmake c:\projects\source -G "%GENERATOR%" -DCMAKE_BUILD_TYPE:STRING=Release -DCPPBOILERPLATELIB_USE_CONAN:BOOL=TRUE
+    cmake c:\projects\source -G "%GENERATOR%" -DCMAKE_BUILD_TYPE:STRING=Release -DGCSG_USE_CONAN:BOOL=TRUE
 
     cmake --build . --config "Release"
 
@@ -105,7 +105,7 @@ test_script:
 #
 #     conan install c:\projects\source --build -s arch=x86_64
 #
-#     cmake c:\projects\source -DCMAKE_CXX_FLAGS="%FLAGS%" -G "%GENERATOR%" -DCPPBOILERPLATELIB_USE_CONAN:BOOL=TRUE
+#     cmake c:\projects\source -DCMAKE_CXX_FLAGS="%FLAGS%" -G "%GENERATOR%" -DGCSG_USE_CONAN:BOOL=TRUE
 #
 #     cmake --build . --config "Debug"
 #

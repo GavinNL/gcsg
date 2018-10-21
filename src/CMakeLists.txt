@@ -11,4 +11,4 @@ FOREACH(subdir ${SUBDIRS})
 ENDFOREACH()
 MESSAGE("=====================================================")
 
-MESSAGE("${CPPBOILERPLATE_LIBS}")
+MESSAGE("${GCSG_LIBS}")
