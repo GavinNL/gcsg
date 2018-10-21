@@ -126,12 +126,6 @@ public:
         return m_point[0] + t*v;
     }
 
-
-
-    void print() const
-    {
-        std::cout << *this << std::endl;
-    }
 };
 
 
