@@ -38,6 +38,15 @@ public:
         m_plane = m_face.get_hyperplane();
     }
 
+    size_t count() const
+    {
+        size_t s = 1;
+        if(m_back)
+            s += m_back->count();
+        if(m_front)
+            s += m_front->count();
+        return s;
+    }
 
     std::unique_ptr<Node> m_back;
     std::unique_ptr<Node> m_front;
@@ -91,6 +100,7 @@ public:
     {
         if( &other != this)
         {
+            m_root.reset();
             other.for_each(
             [&](face_type const & L)
             {

@@ -19,6 +19,12 @@ public:
     using point_type  = vec<dim>;
     using normal_type = vec<dim>;
 
+    struct point_of_intersection
+    {
+        point_type point;
+        float      t;
+    };
+
     /**
      * @brief distance
      * @param d
@@ -59,10 +65,46 @@ public:
 
     normal_type const & normal() { return m_normal; };
 
+
+    /**
+     * @brief intersection_point
+     * @param a
+     * @param b
+     * @return
+     *
+     * Given a line defined by ab, return the intersection point with the hyperplane
+     */
+    point_of_intersection intersection_point(point_type const & a, point_type const & b) const
+    {
+        const auto v = b-a;
+        auto t = glm::dot( m_normal, m_point-a) / glm::dot( m_normal, v);
+        assert( !std::isnan(t));
+        auto B = a + t*v;
+        return {B,t};
+
+    }
+
     normal_type m_normal;
     point_type  m_point;
 };
 
+}
+
+template<uint32_t N>
+inline std::ostream & operator << (std::ostream & out, gcgs::hyperplane<N> const & L)
+{
+    auto & n = L.m_normal;
+    auto & p = L.m_point;
+    if(N==2)
+    {
+        out << "(" << p[0] << "," << p[1] << "|";
+               out << n[0] << "," << n[1] << ")";
+    }
+    else {
+        out << "(" << p[0] << "," << p[1] << "," << p[2] << "|";
+               out << n[0] << "," << n[1] << "," << n[2] << ")";
+    }
+    return out;
 }
 
 #endif

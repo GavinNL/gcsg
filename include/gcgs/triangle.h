@@ -3,7 +3,6 @@
 #define CGCS_TRIANGLE_H
 
 #include "hyperplane.h"
-
 #include <ostream>
 
 namespace gcgs
@@ -57,6 +56,14 @@ public:
         return plane_type( m_point[0], n );
     }
 
+    float surface_area() const
+    {
+        const auto v1 = m_point[1] - m_point[0];
+        const auto v2 = m_point[2] - m_point[0];
+        const auto n = glm::cross(v1,v2);
+        return glm::length(n) * 2.0f;
+    }
+
     triangle invert() const
     {
         return triangle{ m_point[0], m_point[2], m_point[1]};
@@ -77,8 +84,6 @@ public:
         auto d0 = plane.distance( m_point[0]);
         auto d1 = plane.distance( m_point[1]);
         auto d2 = plane.distance( m_point[2]);
-
-
 
         if( d0 <= 0 && d1 <= 0 && d2 <= 0 )
         {
@@ -181,8 +186,9 @@ public:
 
 inline std::ostream & operator << (std::ostream & out, gcgs::triangle const & L)
 {
-    out << "(" << L[0].x << "," << L[0].y << ",";
-    out << L[1].x << "," << L[1].y << ")";
+    out << "(" << L[0].x << "," << L[0].y << "," << L[0].z << "|";
+           out << L[1].x << "," << L[1].y << "," << L[1].z << "|";
+           out << L[2].x << "," << L[2].y << "," << L[2].z << ")";
     return out;
 }
 
