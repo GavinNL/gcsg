@@ -1,12 +1,10 @@
-#include <gnl/gnl_interp.h>
-#include <glm/glm.hpp>
+#include <catch2/catch.hpp>
+
+#include <string>
 #include <vector>
 
-#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
-#include <catch2/catch.hpp>
-#include <string>
+#include <glm/glm.hpp>
 
-#define GCGS_INCLUDE_TESTS
 #include <gcgs/line_segment.h>
 #include <gcgs/triangle.h>
 
