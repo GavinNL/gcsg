@@ -21,7 +21,7 @@ add_definitions(-std=c++11)
 
 option(BUILD_SHARED_LIBS "Enable compilation of shared libraries" OFF)
 
-option(GCSG_USE_CONAN "Use Conan to handle dependencies" OFF)
+option(GCSG_USE_CONAN "Use Conan to handle dependencies" ON)
 option(GCSG_ENABLE_COVERAGE "Enable Code Coverage flags" OFF)
 option(GCSG_BUILD_TESTS "Build Tests" ON)
 
@@ -174,10 +174,10 @@ if(GCSG_USE_CONAN)
     #    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     #)
 
-    #execute_process (
-    #    COMMAND bash -c "conan install ${CMAKE_SOURCE_DIR} --build=missing -s compiler=${CONAN_COMPILER} -s compiler.version=${CXX_COMPILER_VER}"
-    #    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    #)
+    execute_process (
+        COMMAND bash -c "conan install ${CMAKE_SOURCE_DIR} --build=missing"
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
 
    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
    set(CONAN_SYSTEM_INCLUDES ON)
