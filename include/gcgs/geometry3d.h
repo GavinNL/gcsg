@@ -5,18 +5,18 @@
 #include "triangle.h"
 #include<vector>
 
-namespace gcgs
+namespace gcsg
 {
 
 struct geo3d
 {
 
-    static std::vector<gcgs::triangle> box_mesh( gcgs::vec3 const & dim, gcgs::vec3 const & offset)
+    static std::vector<gcsg::triangle> box_mesh( gcsg::vec3 const & dim, gcsg::vec3 const & offset)
     {
         std::vector< glm::vec3 > P;
         std::vector< uint32_t> I;
 
-        std::vector<gcgs::triangle> T;
+        std::vector<gcsg::triangle> T;
 
         auto & dx = dim[0];
         auto & dy = dim[1];
@@ -65,7 +65,7 @@ struct geo3d
 
          for(uint32_t i=0 ; i < P.size(); i+=3)
          {
-             T.push_back( gcgs::triangle{ P[i], P[i+1], P[i+2] } );
+             T.push_back( gcsg::triangle{ P[i], P[i+1], P[i+2] } );
          }
         return T;
 

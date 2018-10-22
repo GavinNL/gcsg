@@ -6,7 +6,7 @@
 
 #include<type_traits>
 
-namespace gcgs
+namespace gcsg
 {
 
 template<uint32_t length>

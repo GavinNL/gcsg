@@ -5,13 +5,13 @@
 #include "hyperplane.h"
 #include <ostream>
 
-namespace gcgs
+namespace gcsg
 {
 class triangle;
 }
-std::ostream & operator << (std::ostream & out, gcgs::triangle const & L);
+std::ostream & operator << (std::ostream & out, gcsg::triangle const & L);
 
-namespace gcgs
+namespace gcsg
 {
 
 /**
@@ -191,7 +191,7 @@ public:
 
 }
 
-inline std::ostream & operator << (std::ostream & out, gcgs::triangle const & L)
+inline std::ostream & operator << (std::ostream & out, gcsg::triangle const & L)
 {
     out << "(" << L[0].x << "," << L[0].y << "," << L[0].z << "|";
            out << L[1].x << "," << L[1].y << "," << L[1].z << "|";

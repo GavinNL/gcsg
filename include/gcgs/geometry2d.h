@@ -5,15 +5,15 @@
 #include "line_segment.h"
 #include<vector>
 
-namespace gcgs
+namespace gcsg
 {
 
 struct geo2d
 {
 
-    static std::vector<gcgs::line_segment> get_circle(float R, glm::vec2 offset = glm::vec2(0,0), uint32_t N=10)
+    static std::vector<gcsg::line_segment> get_circle(float R, glm::vec2 offset = glm::vec2(0,0), uint32_t N=10)
     {
-        std::vector<gcgs::line_segment> b;
+        std::vector<gcsg::line_segment> b;
         float t = 0.0;
         float dt = 3.141592653589f * 2.0f / static_cast<float>(N);
         for(uint32_t i=0;i<N;i++)
@@ -30,9 +30,9 @@ struct geo2d
     }
 
 
-    static std::vector<gcgs::line_segment> get_box(float s, glm::vec2 offset = glm::vec2(0,0))
+    static std::vector<gcsg::line_segment> get_box(float s, glm::vec2 offset = glm::vec2(0,0))
     {
-        std::vector<gcgs::line_segment> b;
+        std::vector<gcsg::line_segment> b;
         b.push_back( { glm::vec2{-1, 1}, glm::vec2{1, 1}} );
         b.push_back( { glm::vec2{ 1, 1}, glm::vec2{1,-1}} );
         b.push_back( { glm::vec2{ 1,-1}, glm::vec2{-1,-1}} );

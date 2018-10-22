@@ -4,7 +4,7 @@
 
 #include "vec.h"
 
-namespace gcgs
+namespace gcsg
 {
 
 template<uint32_t dim>
@@ -91,7 +91,7 @@ public:
 }
 
 template<uint32_t N>
-inline std::ostream & operator << (std::ostream & out, gcgs::hyperplane<N> const & L)
+inline std::ostream & operator << (std::ostream & out, gcsg::hyperplane<N> const & L)
 {
     auto & n = L.m_normal;
     auto & p = L.m_point;

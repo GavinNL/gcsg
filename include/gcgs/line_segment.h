@@ -6,13 +6,13 @@
 
 #include <ostream>
 
-namespace gcgs
+namespace gcsg
 {
 class line_segment;
 }
-std::ostream & operator << (std::ostream & out, gcgs::line_segment const & L);
+std::ostream & operator << (std::ostream & out, gcsg::line_segment const & L);
 
-namespace gcgs
+namespace gcsg
 {
 
 /**
@@ -136,7 +136,7 @@ public:
 
 }
 
-inline std::ostream & operator << (std::ostream & out, gcgs::line_segment const & L)
+inline std::ostream & operator << (std::ostream & out, gcsg::line_segment const & L)
 {
     out << "(" << L[0].x << "," << L[0].y << ",";
     out << L[1].x << "," << L[1].y << ")";

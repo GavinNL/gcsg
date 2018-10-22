@@ -13,9 +13,9 @@
 
 using namespace std;
 
-void print_line_segments( gcgs::Tree<2, gcgs::line_segment> const & T)
+void print_line_segments( gcsg::Tree<2, gcsg::line_segment> const & T)
 {
-    using namespace gcgs;
+    using namespace gcsg;
 
     T.for_each(
     [&](line_segment & L)
@@ -27,7 +27,7 @@ void print_line_segments( gcgs::Tree<2, gcgs::line_segment> const & T)
 
 int main()
 {
-    using namespace gcgs;
+    using namespace gcsg;
 
     Tree<2, line_segment> S1;
     Tree<2, line_segment> S2;

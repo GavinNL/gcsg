@@ -12,7 +12,7 @@
 #include "hyperplane.h"
 #include "log.h"
 
-namespace gcgs
+namespace gcsg
 {
 
 #define EPSILON 1e-6
@@ -197,7 +197,7 @@ public:
 
     tree_type Union(tree_type const & S2) const
     {
-        using namespace gcgs;
+        using namespace gcsg;
 
         tree_type inside;
         tree_type outside;
@@ -220,7 +220,7 @@ public:
 
     tree_type Intersect(tree_type const & S2) const
     {
-        using namespace gcgs;
+        using namespace gcsg;
 
         tree_type inside;
         tree_type outside;

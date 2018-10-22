@@ -13,9 +13,9 @@
 
 using namespace std;
 
-void print_mesh( gcgs::Tree<3, gcgs::triangle> const & T)
+void print_mesh( gcsg::Tree<3, gcsg::triangle> const & T)
 {
-    using namespace gcgs;
+    using namespace gcsg;
 
     printf("solid name\n");
     T.for_each(
@@ -42,7 +42,7 @@ void print_mesh( gcgs::Tree<3, gcgs::triangle> const & T)
 
 int main()
 {
-    using namespace gcgs;
+    using namespace gcsg;
 
     Tree<3, triangle> S1;
     Tree<3, triangle> S2;

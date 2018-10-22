@@ -19,9 +19,9 @@ SCENARIO( "Triangle Hyperplanes" ) {
         glm::vec3 b(-1 ,  1 , 0);
         glm::vec3 c(-1 , -1 , 0);
 
-        gcgs::triangle abc{a,b,c};
+        gcsg::triangle abc{a,b,c};
 
-        gcgs::Tree<3, gcgs::triangle> T;
+        gcsg::Tree<3, gcsg::triangle> T;
 
         T.add(abc);
 
@@ -29,7 +29,7 @@ SCENARIO( "Triangle Hyperplanes" ) {
         {
             // above the xy plane
             glm::vec3 t( 0 ,  0 , 1);
-            gcgs::triangle ABC{a+t,b+t,c+t};
+            gcsg::triangle ABC{a+t,b+t,c+t};
 
             T.add( ABC );
 
@@ -43,7 +43,7 @@ SCENARIO( "Triangle Hyperplanes" ) {
         {
             // above the xy plane
             glm::vec3 t( 0 ,  0 , -1);
-            gcgs::triangle ABC{a+t,b+t,c+t};
+            gcsg::triangle ABC{a+t,b+t,c+t};
 
             T.add( ABC );
 
@@ -60,7 +60,7 @@ SCENARIO( "Triangle Hyperplanes" ) {
 
 SCENARIO( "Quad Planes" ) {
 
-    using TreeType = gcgs::Tree<3, gcgs::triangle>;
+    using TreeType = gcsg::Tree<3, gcsg::triangle>;
     GIVEN( "A line segment ab and ba" )
     {
         // on the xy plane
@@ -71,8 +71,8 @@ SCENARIO( "Quad Planes" ) {
 
         WHEN("Two triangles which are coplanar (in the xz plane) are added to an empty tree")
         {
-            gcgs::triangle t1{a,c,b};
-            gcgs::triangle t2{a,d,c};
+            gcsg::triangle t1{a,c,b};
+            gcsg::triangle t2{a,d,c};
 
             auto n1 = t1.get_hyperplane().normal();
             auto n2 = t1.get_hyperplane().normal();
@@ -98,7 +98,7 @@ SCENARIO( "Quad Planes" ) {
                 glm::vec3 B(  2 ,  1 , 0);
                 glm::vec3 C( -2,   1 , 0);
 
-                gcgs::triangle ABC{A,B,C};
+                gcsg::triangle ABC{A,B,C};
 
                 THEN("Triangle ABC is partioned by the tree")
                 {
@@ -112,7 +112,7 @@ SCENARIO( "Quad Planes" ) {
                 }
                 WHEN("Triangle ABC is added to the tree")
                 {
-                    std::vector<gcgs::triangle> below, above;
+                    std::vector<gcsg::triangle> below, above;
                     auto h1 = t1.get_hyperplane();
 
                     ABC.split( h1, below, above);
