@@ -7,23 +7,25 @@
 namespace gcsg
 {
 
-template<uint32_t dim>
 /**
  * @brief The hyperplane class
  *
  * The Hyerplane class represents a plane in N dimensions.
  */
+template<typename T, uint32_t dim>
 class hyperplane
 {
 public:
-    using float_type  = float;
+    static_assert( std::is_floating_point<T>::value, "template parameter must be floating point type");
+    static_assert( dim==2 || dim==3, "Dimensions must be 2 or 3");
+    using float_type  = T;
     using point_type  = typename std::conditional<dim==2, vec2<float_type>, vec3<float_type> >::type;
     using normal_type = typename std::conditional<dim==2, vec2<float_type>, vec3<float_type> >::type;
 
     struct point_of_intersection
     {
         point_type point;
-        float      t;
+        float_type     t;
     };
 
     /**
@@ -41,7 +43,7 @@ public:
      *                  |-> n
      * negative         |
      */
-    float distance(point_type const & d) const
+    float_type distance(point_type const & d) const
     {
         const auto r = d-m_point;
         return glm::dot(r, m_normal) / glm::length(m_normal);
@@ -91,8 +93,8 @@ public:
 
 }
 
-template<uint32_t N>
-inline std::ostream & operator << (std::ostream & out, gcsg::hyperplane<N> const & L)
+template<typename T, uint32_t N>
+inline std::ostream & operator << (std::ostream & out, gcsg::hyperplane<T, N> const & L)
 {
     auto & n = L.m_normal;
     auto & p = L.m_point;

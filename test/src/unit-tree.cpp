@@ -10,26 +10,30 @@
 
 #include "geometry_tests.h"
 
+using vec = gcsg::vec3<float>;
+using triangle = gcsg::triangle<float>;
+using hyperplane = gcsg::hyperplane<float,3>;
+
 SCENARIO( "Triangle Hyperplanes" ) {
 
     GIVEN( "A line segment ab and ba" )
     {
         // on the xy plane
-        glm::vec3 a( 1 ,  0 , 0);
-        glm::vec3 b(-1 ,  1 , 0);
-        glm::vec3 c(-1 , -1 , 0);
+        vec a( 1 ,  0 , 0);
+        vec b(-1 ,  1 , 0);
+        vec c(-1 , -1 , 0);
 
-        gcsg::triangle abc{a,b,c};
+        triangle abc{a,b,c};
 
-        gcsg::Tree<3, gcsg::triangle> T;
+        gcsg::Tree<3, triangle> T;
 
         T.add(abc);
 
         WHEN("Triangle ABC which is above abc is added to the plane")
         {
             // above the xy plane
-            glm::vec3 t( 0 ,  0 , 1);
-            gcsg::triangle ABC{a+t,b+t,c+t};
+            vec t( 0 ,  0 , 1);
+            triangle ABC{a+t,b+t,c+t};
 
             T.add( ABC );
 
@@ -42,8 +46,8 @@ SCENARIO( "Triangle Hyperplanes" ) {
         WHEN("Triangle ABC which is below abc is added to the plane")
         {
             // above the xy plane
-            glm::vec3 t( 0 ,  0 , -1);
-            gcsg::triangle ABC{a+t,b+t,c+t};
+            vec t( 0 ,  0 , -1);
+            triangle ABC{a+t,b+t,c+t};
 
             T.add( ABC );
 
@@ -60,25 +64,25 @@ SCENARIO( "Triangle Hyperplanes" ) {
 
 SCENARIO( "Quad Planes" ) {
 
-    using TreeType = gcsg::Tree<3, gcsg::triangle>;
+    using TreeType = gcsg::Tree<3, triangle>;
     GIVEN( "A line segment ab and ba" )
     {
         // on the xy plane
-        glm::vec3 a( 1 ,  0 , 0);
-        glm::vec3 b( 0 ,  0 , 0);
-        glm::vec3 c( 0 ,  0 , 1);
-        glm::vec3 d( 1 ,  0 , 1);
+        vec a( 1 ,  0 , 0);
+        vec b( 0 ,  0 , 0);
+        vec c( 0 ,  0 , 1);
+        vec d( 1 ,  0 , 1);
 
         WHEN("Two triangles which are coplanar (in the xz plane) are added to an empty tree")
         {
-            gcsg::triangle t1{a,c,b};
-            gcsg::triangle t2{a,d,c};
+            triangle t1{a,c,b};
+            triangle t2{a,d,c};
 
             auto n1 = t1.get_hyperplane().normal();
             auto n2 = t1.get_hyperplane().normal();
 
             REQUIRE( equal_points(n1,n2));
-            REQUIRE( equal_points(n1, glm::vec3(0,-1,0)));
+            REQUIRE( equal_points(n1, vec(0,-1,0)));
 
             TreeType T;
 
@@ -94,11 +98,11 @@ SCENARIO( "Quad Planes" ) {
 
             WHEN("A triangle which is in the xy plane and intersects the plane is added")
             {
-                glm::vec3 A(  0 , -1 , 0);
-                glm::vec3 B(  2 ,  1 , 0);
-                glm::vec3 C( -2,   1 , 0);
+                vec A(  0 , -1 , 0);
+                vec B(  2 ,  1 , 0);
+                vec C( -2,   1 , 0);
 
-                gcsg::triangle ABC{A,B,C};
+                triangle ABC{A,B,C};
 
                 THEN("Triangle ABC is partioned by the tree")
                 {
@@ -112,7 +116,7 @@ SCENARIO( "Quad Planes" ) {
                 }
                 WHEN("Triangle ABC is added to the tree")
                 {
-                    std::vector<gcsg::triangle> below, above;
+                    std::vector<triangle> below, above;
                     auto h1 = t1.get_hyperplane();
 
                     ABC.split( h1, below, above);

@@ -29,7 +29,7 @@ class line_segment
 {
 public:
     using float_type      = T;
-    using plane_type      = hyperplane<2>;
+    using plane_type      = hyperplane<float_type, 2>;
     using point_type      = vec2<float_type>;
     using normal_type     = vec2<float_type>;
 
@@ -138,6 +138,8 @@ public:
 };
 
 
+using line_segment_f = line_segment<float>;
+using line_segment_d = line_segment<double>;
 
 }
 

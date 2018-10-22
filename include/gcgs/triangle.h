@@ -7,9 +7,11 @@
 
 namespace gcsg
 {
+template<typename T>
 class triangle;
 }
-std::ostream & operator << (std::ostream & out, gcsg::triangle const & L);
+template<typename T>
+std::ostream & operator << (std::ostream & out, gcsg::triangle<T> const & L);
 
 namespace gcsg
 {
@@ -20,11 +22,14 @@ namespace gcsg
  * A line segment is a line connecting two points
  * in two dimensions.
  */
+template<typename T>
 class triangle
 {
 public:
-    using float_type      = float;
-    using plane_type      = hyperplane<3>;
+    static_assert( std::is_floating_point<T>::value, "template must be a floating point type");
+
+    using float_type      = T;
+    using plane_type      = hyperplane<float_type, 3>;
     using point_type      = vec3<float_type>;
     using normal_type     = vec3<float_type>;
 
@@ -189,10 +194,13 @@ public:
 };
 
 
+using triangle_f = triangle<float>;
+using triangle_d = triangle<double>;
 
 }
 
-inline std::ostream & operator << (std::ostream & out, gcsg::triangle const & L)
+template<typename T>
+inline std::ostream & operator << (std::ostream & out, gcsg::triangle<T> const & L)
 {
     out << "(" << L[0].x << "," << L[0].y << "," << L[0].z << "|";
            out << L[1].x << "," << L[1].y << "," << L[1].z << "|";

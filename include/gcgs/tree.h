@@ -28,8 +28,11 @@ public:
     using plane_type = plane_t;  //  plane              line
     using point_type = point_t;
 
+    using float_type = typename face_type::float_type;
+
     face_type  m_face;
     plane_type m_plane;
+
 
     Node()
     {}
@@ -71,6 +74,7 @@ public:
     using plane_type = typename face_t::plane_type;  //  plane              line
     using point_type = typename face_t::point_type;
 
+    using float_type = typename face_type::float_type;
     using tree_type = Tree<N, face_t>;
     using node_type = Node<face_type, plane_type, point_type>;
 
@@ -131,7 +135,7 @@ public:
     static bool is_partitioned(node_type * n,  face_type const & T)
     {
         // Distance between point and plane
-        std::array<float, N> f;
+        std::array<float_type, N> f;
 
         int32_t i=0;
         int count=0;
@@ -165,7 +169,7 @@ public:
     static face_type partitioning_face(node_type * n, face_type const & T)
     {
         // Distance between point and plane
-        std::array<float, N> f;
+        std::array<float_type, N> f;
 
         int32_t i=0;
         int count=0;
@@ -345,7 +349,7 @@ protected:
         auto & plane = n->m_plane;
 
         // Distance between point and plane
-        std::array<float, N> f;
+        std::array<float_type, N> f;
 
         int32_t i=0;
         bool all_inside  = true;
@@ -426,7 +430,7 @@ auto log = get_logger();
         auto & plane = n->m_plane;
 
         // Distance between point and plane
-        std::array<float, N> f;
+        std::array<float_type, N> f;
 
         int32_t i=0;
         bool all_inside  = true;
