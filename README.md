@@ -15,8 +15,8 @@ Dev:
 ## Building
 
 Requirements:
-*  The conan package manager must be installed on your system.
-*  matplotlib, and numpy must be installed to plot the points
+ *  The conan package manager must be installed on your system.
+ *  matplotlib, and numpy must be installed to plot the points
 
 ```C++
 git clone https://github.com/gavinNL/gcsg.git

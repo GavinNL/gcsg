@@ -13,7 +13,6 @@ pointsy = []
 with open(sys.argv[1]) as f:
 
     for line in f: # read rest of lines
-       
         array = [float(x) for x in line.split()]
         lines.append( [ (array[0], array[1]), (array[2], array[3])   ])
 
@@ -48,4 +47,3 @@ pl.ylabel('y')
 
 pl.plot(pointsx, pointsy, 'o')
 pl.show()
-
