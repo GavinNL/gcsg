@@ -238,6 +238,7 @@ else()
                                -Wuseless-cast # warn if you perform a cast to the same type
                                -Wdouble-promotion # warn if float is implicit promoted to double
                                -Wformat=2 # warn on security issues around functions that format output
+                               -Wreturn-type
                                           # (ie printf)
                                )
     else()

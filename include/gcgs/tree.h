@@ -157,6 +157,7 @@ public:
         {
             return true;
         }
+        return false;
     }
 
     // returns the face that splits the
