@@ -33,9 +33,9 @@ int main()
     Tree<2, line_segment> S2;
     Tree<2, line_segment> S3;
 
-    auto B1 = geo2d::get_circle(1.0, glm::vec2(0.0), 20);//get_box(1,glm::vec2(0));
+    auto B1 = geo2d::get_circle(1.0, vec2f(0.0), 20);//get_box(1,glm::vec2(0));
     auto B2 = geo2d::get_box(1,glm::vec2(1,-1));
-    auto B3 = geo2d::get_circle(1.0, glm::vec2(2.0,-2), 20);//get_box(1,glm::vec2(0));
+    auto B3 = geo2d::get_circle(1.0, vec2f(2.0,-2), 20);//get_box(1,glm::vec2(0));
 
     //auto B1 = geo2d::get_box(1,glm::vec2(0,0));
     //auto B2 = geo2d::get_box(1,glm::vec2(2,0));

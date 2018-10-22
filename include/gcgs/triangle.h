@@ -23,9 +23,10 @@ namespace gcsg
 class triangle
 {
 public:
+    using float_type      = float;
     using plane_type      = hyperplane<3>;
-    using point_type      = vec<3>;
-    using normal_type     = vec<3>;
+    using point_type      = vec3<float_type>;
+    using normal_type     = vec3<float_type>;
 
     point_type m_point[3];
 
@@ -56,7 +57,7 @@ public:
         return plane_type( m_point[0], n );
     }
 
-    float surface_area() const
+    float_type surface_area() const
     {
         const auto v1 = m_point[1] - m_point[0];
         const auto v2 = m_point[2] - m_point[0];

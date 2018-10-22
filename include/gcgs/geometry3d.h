@@ -11,7 +11,7 @@ namespace gcsg
 struct geo3d
 {
 
-    static std::vector<gcsg::triangle> box_mesh( gcsg::vec3 const & dim, gcsg::vec3 const & offset)
+    static std::vector<gcsg::triangle> box_mesh( gcsg::vec3<float> const & dim, gcsg::vec3<float> const & offset)
     {
         std::vector< glm::vec3 > P;
         std::vector< uint32_t> I;

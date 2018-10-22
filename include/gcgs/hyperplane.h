@@ -16,8 +16,9 @@ template<uint32_t dim>
 class hyperplane
 {
 public:
-    using point_type  = vec<dim>;
-    using normal_type = vec<dim>;
+    using float_type  = float;
+    using point_type  = typename std::conditional<dim==2, vec2<float_type>, vec3<float_type> >::type;
+    using normal_type = typename std::conditional<dim==2, vec2<float_type>, vec3<float_type> >::type;
 
     struct point_of_intersection
     {

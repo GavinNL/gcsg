@@ -24,9 +24,10 @@ namespace gcsg
 class line_segment
 {
 public:
+    using float_type      = float;
     using plane_type      = hyperplane<2>;
-    using point_type      = vec<2>;
-    using normal_type     = vec<2>;
+    using point_type      = vec2<float_type>;
+    using normal_type     = vec2<float_type>;
 
     point_type m_point[2];
 

@@ -51,13 +51,13 @@ int main()
     Tree<3, triangle> S5;
   //  Tree<3, triangle> S6;
 
-    auto B1 = geo3d::box_mesh( vec3(2,2,2), vec3(0));
+    auto B1 = geo3d::box_mesh( vec3f(2,2,2), vec3f(0));
 
-    auto B5 = geo3d::box_mesh( vec3(2,2,2), vec3(1));
+    auto B5 = geo3d::box_mesh( vec3f(2,2,2), vec3f(1));
 
-    auto B2 = geo3d::box_mesh( vec3(1,4,1), vec3(0));
-    auto B3 = geo3d::box_mesh( vec3(4,1,1), vec3(0));
-    auto B4 = geo3d::box_mesh( vec3(1,1,4), vec3(0));
+    auto B2 = geo3d::box_mesh( vec3f(1,4,1), vec3f(0));
+    auto B3 = geo3d::box_mesh( vec3f(4,1,1), vec3f(0));
+    auto B4 = geo3d::box_mesh( vec3f(1,1,4), vec3f(0));
 
 
 
