@@ -42,6 +42,7 @@ glm::vec2 missing_point(gcgs::line_segment const & ab, glm::vec2 const & a )
 {
     if( equal_points(ab[0],a) ) return ab[1];
     if( equal_points(ab[1],a) ) return ab[0];
+    throw std::runtime_error("Point is not of the end points");
 }
 
 // two triangles are coplanar if their normals are the same
@@ -174,12 +175,12 @@ SCENARIO( "Line-Segment Hyperplane Intersections" ) {
             THEN("The intersection point of ab and bd is the origin")
             {
                 auto intersection_point = ab.intersection_point(h2);
-                REQUIRE( equal_points( intersection_point, glm::vec2(0) ) );
+                REQUIRE( equal_points( intersection_point, origin ) );
             }
             THEN("The intersection point of cd and ab is the origin")
             {
                 auto intersection_point = cd.intersection_point(h1);
-                REQUIRE( equal_points( intersection_point, glm::vec2(0) ) );
+                REQUIRE( equal_points( intersection_point, origin ) );
             }
         }
     }
@@ -253,8 +254,8 @@ SCENARIO( "Splitting a Line-Segment" ) {
             }
             THEN("A new point X is created on both line segments and is on the plane Pcd")
             {
-                auto x = missing_point(inside[0] ,a);
-                auto X = missing_point(outside[0],b);
+                auto x = missing_point(outside[0] ,a);
+                auto X = missing_point(inside[0],b);
 
                 REQUIRE( equal_points(x,X));
 
