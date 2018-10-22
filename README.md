@@ -18,7 +18,7 @@ Requirements:
  *  The conan package manager must be installed on your system.
  *  matplotlib, and numpy must be installed to plot the points
 
-```C++
+```bash
 git clone https://github.com/gavinNL/gcsg.git
 cd gscg
 mkdir build
@@ -38,7 +38,7 @@ python3 points
 To plot the output of the 2d examples, a python script is provided. You will need
 to to have matplotlib installed.
 
-```
+```bash
 ./2d > shape.txt
 python3 plot_points shape.txt
 ```
@@ -47,8 +47,9 @@ python3 plot_points shape.txt
 
 The 3d example provided prints out the solid as an stl document.
 
-You can pipe the output to a file
-```
+You can pipe the output to a file:
+
+```bash
 ./3d > solid.stl
 ```
 
