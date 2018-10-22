@@ -30,3 +30,26 @@ cp ../plot_points.py .
 ./bin/2d > points
 python3 points
 ```
+
+## Examples
+
+### 2D
+
+To plot the output of the 2d examples, a python script is provided. You will need
+to to have matplotlib installed.
+
+```
+./2d > shape.txt
+python3 plot_points shape.txt
+```
+
+### 3D
+
+The 3d example provided prints out the solid as an stl document.
+
+You can pipe the output to a file
+```
+./3d > solid.stl
+```
+
+And then use an online STL viewer to view it. A good one is at: [http://piscis.github.io/webgl-3d-viewer/example/](http://piscis.github.io/webgl-3d-viewer/example/)
