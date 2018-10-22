@@ -13,12 +13,13 @@
 
 using namespace std;
 
-void print_line_segments( gcsg::Tree<2, gcsg::line_segment> const & T)
+template<typename T>
+void print_line_segments( gcsg::Tree<2, gcsg::line_segment<T> > const & tree)
 {
     using namespace gcsg;
 
-    T.for_each(
-    [&](line_segment & L)
+    tree.for_each(
+    [&](gcsg::line_segment<T> & L)
     {
         std::cout << L[0].x << ' ' << L[0].y << ' ' << L[1].x << ' ' << L[1].y << '\n';
     });
@@ -27,15 +28,16 @@ void print_line_segments( gcsg::Tree<2, gcsg::line_segment> const & T)
 
 int main()
 {
-    using namespace gcsg;
+    using line_segment = gcsg::line_segment<float>;
+    using vec2         = gcsg::vec2f;
 
-    Tree<2, line_segment> S1;
-    Tree<2, line_segment> S2;
-    Tree<2, line_segment> S3;
+    gcsg::Tree<2, line_segment> S1;
+    gcsg::Tree<2, line_segment> S2;
+    gcsg::Tree<2, line_segment> S3;
 
-    auto B1 = geo2d::get_circle(1.0, vec2f(0.0), 20);//get_box(1,glm::vec2(0));
-    auto B2 = geo2d::get_box(1,glm::vec2(1,-1));
-    auto B3 = geo2d::get_circle(1.0, vec2f(2.0,-2), 20);//get_box(1,glm::vec2(0));
+    auto B1 = gcsg::geo2d::get_circle(1.0f, vec2(0.0), 20);//get_box(1,glm::vec2(0));
+    auto B2 = gcsg::geo2d::get_box(1.f ,glm::vec2(1,-1));
+    auto B3 = gcsg::geo2d::get_circle(1.0f, vec2(2.0,-2), 20);//get_box(1,glm::vec2(0));
 
     //auto B1 = geo2d::get_box(1,glm::vec2(0,0));
     //auto B2 = geo2d::get_box(1,glm::vec2(2,0));
