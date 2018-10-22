@@ -1,16 +1,16 @@
 # gcsg
 
 Master:
-![Travis (.org) branch](https://img.shields.io/travis/GavinNL/gcsg/master.svg)
-![AppVeyor branch](https://img.shields.io/appveyor/ci/GavinNL/gcsg/master.svg)
-![Codecov branch](https://img.shields.io/codecov/c/github/GavinNL/gcsg/master.svg)
-![Codacy branch grade](https://img.shields.io/codacy/grade/c19827f8039d4dd09b4f0671d8edb5bf/master.svg)
+[![Build Status](https://travis-ci.org/GavinNL/gcsg.svg?branch=master)](https://travis-ci.org/GavinNL/gcsg)
+[![Build status](https://ci.appveyor.com/api/projects/status/88di7b89gyauvivj/branch/master?svg=true)](https://ci.appveyor.com/project/GavinNL/gcsg/branch/master)
+[![codecov](https://codecov.io/gh/GavinNL/gcsg/branch/master/graph/badge.svg)](https://codecov.io/gh/GavinNL/gcsg)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c19827f8039d4dd09b4f0671d8edb5bf)](https://www.codacy.com/app/GavinNL/gcsg?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=GavinNL/gcsg&amp;utm_campaign=Badge_Grade)
 
-Dev:
-![Travis (.org) branch](https://img.shields.io/travis/GavinNL/gcsg/dev.svg)
-![AppVeyor branch](https://img.shields.io/appveyor/ci/GavinNL/gcsg/dev.svg)
-![Codecov branch](https://img.shields.io/codecov/c/github/GavinNL/gcsg/dev.svg)
-![Codacy branch grade](https://img.shields.io/codacy/grade/c19827f8039d4dd09b4f0671d8edb5bf/dev.svg)
+Devlop:
+[![Build Status](https://travis-ci.org/GavinNL/gcsg.svg?branch=dev)](https://travis-ci.org/GavinNL/gcsg)
+[![Build status](https://ci.appveyor.com/api/projects/status/88di7b89gyauvivj/branch/dev?svg=true)](https://ci.appveyor.com/project/GavinNL/gcsg/branch/dev)
+[![codecov](https://codecov.io/gh/GavinNL/gcsg/branch/dev/graph/badge.svg)](https://codecov.io/gh/GavinNL/gcsg)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c19827f8039d4dd09b4f0671d8edb5bf)](https://www.codacy.com/app/GavinNL/gcsg?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=GavinNL/gcsg&amp;utm_campaign=Badge_Grade)
 
 ## Building
 
