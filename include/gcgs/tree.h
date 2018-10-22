@@ -7,6 +7,7 @@
 #include <memory>
 #include <iostream>
 #include <vector>
+#include <array>
 
 #include "hyperplane.h"
 #include "log.h"
