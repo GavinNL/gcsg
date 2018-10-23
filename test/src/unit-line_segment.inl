@@ -8,26 +8,32 @@
 #include <gcgs/line_segment.h>
 
 
-bool equal_points(glm::vec2 const &a, glm::vec2 const & b)
+using line_segment = gcsg::line_segment<test_value_type>;
+using vec          = gcsg::vec2<test_value_type>;
+
+bool equal_points(vec const &a, vec const & b)
 {
     return (Catch::Detail::Approx(a.x) == b.x) && (Catch::Detail::Approx(a.y) == b.y);
 }
 
 // checks if two triangles are equal:
 // abc == bca == bca
-bool equal_lines(gcsg::line_segment const & ab, gcsg::line_segment const & AB)
+template<typename T>
+bool equal_lines(gcsg::line_segment<T> const & ab, gcsg::line_segment<T> const & AB)
 {
     return equal_points( ab[0], AB[0] ) && equal_points( ab[1], AB[1] );
 }
 
 // returns true if b is in the triangle abc
-bool contains_point(gcsg::line_segment const & ab, glm::vec2 const & b)
+template<typename T>
+bool contains_point(gcsg::line_segment<T> const & ab, gcsg::vec2<T> const & b)
 {
     return equal_points(ab[0], b) || equal_points(ab[1], b);
 }
 
 // returns the index the point is located at
-int point_index(gcsg::line_segment const & ab, glm::vec2 const & b)
+template<typename T>
+int point_index(gcsg::line_segment<T> const & ab, gcsg::vec2<T> const & b)
 {
     for(int i=0;i<2;i++)
     {
@@ -38,7 +44,8 @@ int point_index(gcsg::line_segment const & ab, glm::vec2 const & b)
 }
 
 // given a triangle abc and two points from that triangle, return the third point
-glm::vec2 missing_point(gcsg::line_segment const & ab, glm::vec2 const & a )
+template<typename T>
+gcsg::vec2<T> missing_point(gcsg::line_segment<T> const & ab, gcsg::vec2<T> const & a )
 {
     if( equal_points(ab[0],a) ) return ab[1];
     if( equal_points(ab[1],a) ) return ab[0];
@@ -46,7 +53,8 @@ glm::vec2 missing_point(gcsg::line_segment const & ab, glm::vec2 const & a )
 }
 
 // two triangles are coplanar if their normals are the same
-bool are_parallel(gcsg::line_segment const & T1, gcsg::line_segment const & T2)
+template<typename T>
+bool are_parallel(gcsg::line_segment<T> const & T1, gcsg::line_segment<T> const & T2)
 {
     return glm::length(
                 glm::normalize( T1[1]-T1[0]) - glm::normalize( T2[1]-T2[0])
@@ -54,26 +62,29 @@ bool are_parallel(gcsg::line_segment const & T1, gcsg::line_segment const & T2)
 }
 
 // two triangles are antiplanar if their normals are negatives of each other
-bool are_antiparallel(gcsg::line_segment const & T1, gcsg::line_segment const & T2)
+template<typename T>
+bool are_antiparallel(gcsg::line_segment<T> const & T1, gcsg::line_segment<T> const & T2)
 {
     return glm::length(
                 glm::normalize( T1[1]-T1[0]) + glm::normalize( T2[1]-T2[0])
                 ) == Catch::Detail::Approx(0.0f);
 }
 
+
+
 SCENARIO( "Local tests" )
 {
     GIVEN( "A line segment ab and ba" )
     {
-        glm::vec2 a(-1, 0 );
-        glm::vec2 b(1 , 0 );
+        vec a(-1, 0 );
+        vec b(1 , 0 );
 
 
 
-        gcsg::line_segment ab{ a, b }; // the normal will always be the vector from point a to point b, rotated 90 counter-clockwisse
-        gcsg::line_segment ba{ b, a };
+        line_segment ab{ a, b }; // the normal will always be the vector from point a to point b, rotated 90 counter-clockwisse
+        line_segment ba{ b, a };
 
-        gcsg::line_segment AB{ 2.f*a, 2.f*b }; // the normal will always be the vector from point a to point b, rotated 90 counter-clockwisse
+        line_segment AB{ test_value_type(2)*a, test_value_type(2)*b }; // the normal will always be the vector from point a to point b, rotated 90 counter-clockwisse
 
         REQUIRE( are_antiparallel(ab,ba) );
         REQUIRE( are_parallel(ab,AB) );
@@ -92,14 +103,14 @@ SCENARIO( "Line-Segment Hyperplanes" )
 
     GIVEN( "A line segment ab and ba" )
     {
-        glm::vec2 a(-1, 0 );
-        glm::vec2 b(1 , 0 );
+        vec a(-1, 0 );
+        vec b(1 , 0 );
 
-        glm::vec2 outside(1, 4);  // point inside the line
-        glm::vec2 inside(-15, -1); // point outside the line
+        vec outside(1, 4);  // point inside the line
+        vec inside(-15, -1); // point outside the line
 
-        gcsg::line_segment ab{ a, b }; // the normal will always be the vector from point a to point b, rotated 90 counter-clockwisse
-        gcsg::line_segment ba{ b, a };
+        line_segment ab{ a, b }; // the normal will always be the vector from point a to point b, rotated 90 counter-clockwisse
+        line_segment ba{ b, a };
 
         WHEN("The hyperplans are extracted")
         {
@@ -114,8 +125,8 @@ SCENARIO( "Line-Segment Hyperplanes" )
             }
             THEN("The Normals are negative of each other")
             {
-                REQUIRE( equal_points( h1.normal() , glm::vec2(0, 1)) );
-                REQUIRE( equal_points( h2.normal() , glm::vec2(0,-1)) );
+                REQUIRE( equal_points( h1.normal() , vec(0, 1)) );
+                REQUIRE( equal_points( h2.normal() , vec(0,-1)) );
             }
             THEN("Distance between the points and the hyerplans are zero")
             {
@@ -156,15 +167,15 @@ SCENARIO( "Line-Segment Hyperplane Intersections" ) {
         //               c
 
 
-        glm::vec2 a(-1, 0 );
-        glm::vec2 b(1 , 0 );
-        glm::vec2 c(0 ,-1 );
-        glm::vec2 d(0 , 1 );
+        vec a(-1, 0 );
+        vec b(1 , 0 );
+        vec c(0 ,-1 );
+        vec d(0 , 1 );
 
-        glm::vec2 origin(0.f);
+        vec origin(0.f);
 
-        gcsg::line_segment ab{ a, b }; // the normal will always be the vector from point a to point b, rotated 90 counter-clockwisse
-        gcsg::line_segment cd{ c, d };
+        line_segment ab{ a, b }; // the normal will always be the vector from point a to point b, rotated 90 counter-clockwisse
+        line_segment cd{ c, d };
 
 
         WHEN("The hyperplanes are extracted")
@@ -199,13 +210,13 @@ SCENARIO( "Splitting a Line-Segment" ) {
         //               c
 
 
-        glm::vec2 a(-1, 0 );
-        glm::vec2 b(1 , 0 );
-        glm::vec2 c(0 ,-1 );
-        glm::vec2 d(0 , 1 );
+        vec a(-1, 0 );
+        vec b(1 , 0 );
+        vec c(0 ,-1 );
+        vec d(0 , 1 );
 
-        gcsg::line_segment ab{ a, b }; // the normal will always be the vector from point a to point b, rotated 90 counter-clockwisse
-        gcsg::line_segment cd{ c, d };
+        line_segment ab{ a, b }; // the normal will always be the vector from point a to point b, rotated 90 counter-clockwisse
+        line_segment cd{ c, d };
 
         auto Pab = ab.get_hyperplane();
         auto Pcd = cd.get_hyperplane();
@@ -222,8 +233,8 @@ SCENARIO( "Splitting a Line-Segment" ) {
         }
         WHEN("ab is split by cd")
         {
-            std::vector<gcsg::line_segment> inside;
-            std::vector<gcsg::line_segment> outside;
+            std::vector<line_segment> inside;
+            std::vector<line_segment> outside;
 
             ab.split(Pcd, inside, outside);
 

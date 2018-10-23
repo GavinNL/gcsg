@@ -9,17 +9,21 @@
 
 #include "geometry_tests.h"
 
+using vec = gcsg::vec3<test_value_type>;
+using triangle = gcsg::triangle<test_value_type>;
+using hyperplane = gcsg::hyperplane<test_value_type,3>;
+
 SCENARIO( "Local Tests" )
 {
-    glm::vec3 a( 1 ,  0 , 0);
-    glm::vec3 b(-1 ,  1 , 0);
-    glm::vec3 c(-1 , -1 , 0);
+    vec a( 1 ,  0 , 0);
+    vec b(-1 ,  1 , 0);
+    vec c(-1 , -1 , 0);
 
     GIVEN("Three triangles abc, bca, cba")
     {
-        gcsg::triangle abc{a,b,c};
-        gcsg::triangle bca{b,c,a};
-        gcsg::triangle cab{c,a,b};
+        triangle abc{a,b,c};
+        triangle bca{b,c,a};
+        triangle cab{c,a,b};
 
         THEN("All three triangles are equal")
         {
@@ -47,8 +51,8 @@ SCENARIO( "Local Tests" )
     }
     GIVEN("Three triangles abc, cba ")
     {
-        gcsg::triangle abc{a,b,c};
-        gcsg::triangle cba{c,b,a};
+        triangle abc{a,b,c};
+        triangle cba{c,b,a};
 
         THEN("triangles are not equal because of opposite winding order")
         {
@@ -60,7 +64,7 @@ SCENARIO( "Local Tests" )
 
     GIVEN("a triangle abc")
     {
-        gcsg::triangle abc{a,b,c};
+        triangle abc{a,b,c};
 
         THEN("The point indices are a=0, b=1,c=2")
         {
@@ -78,10 +82,10 @@ SCENARIO( "Local Tests" )
 
     GIVEN("two triangles whose points are translated")
     {
-        gcsg::triangle T1{a,b,c};
+        triangle T1{a,b,c};
 
-        glm::vec3 o(1,2,3);
-        gcsg::triangle T2{a+o,b+o,c+o};
+        vec o(1,2,3);
+        triangle T2{a+o,b+o,c+o};
 
         THEN("triangles are coplanar")
         {
@@ -92,8 +96,8 @@ SCENARIO( "Local Tests" )
 
     GIVEN("two triangles whose points are translated")
     {
-        gcsg::triangle T1{a,b,c};
-        gcsg::triangle T2{c,b,a};
+        triangle T1{a,b,c};
+        triangle T2{c,b,a};
 
         THEN("triangles are antiplanar")
         {
@@ -107,14 +111,14 @@ SCENARIO( "Triangle Hyperplanes" ) {
 
     GIVEN( "A line segment ab and ba" )
     {
-        glm::vec3 a( 1 ,  0 , 0);
-        glm::vec3 b(-1 ,  1 , 0);
-        glm::vec3 c(-1 , -1 , 0);
+        vec a( 1 ,  0 , 0);
+        vec b(-1 ,  1 , 0);
+        vec c(-1 , -1 , 0);
 
-        glm::vec3 outside(1,   4, 1);  // point inside the line
-        glm::vec3 inside(-15, -1, -1); // point outside the line
+        vec outside(1,   4, 1);  // point inside the line
+        vec inside(-15, -1, -1); // point outside the line
 
-        gcsg::triangle abc{a,b,c};
+        triangle abc{a,b,c};
 
         WHEN("The Triangle is inverted")
         {
@@ -132,7 +136,7 @@ SCENARIO( "Triangle Hyperplanes" ) {
 
             THEN("The Normals are negative of each other")
             {
-                REQUIRE( glm::length( h1.normal() - glm::vec3(0, 0, 1)) == Approx( 0.0 ));
+                REQUIRE( glm::length( h1.normal() - vec(0, 0, 1)) == Approx( 0.0 ));
             }
             THEN("Distance between the points and the hyerplans are zero")
             {
@@ -157,17 +161,17 @@ SCENARIO( "Splitting a Triangle with Hyperplanes 2" ) {
 
     GIVEN( "a hyperplane in the yz plane and a triangle abc" )
     {
-        gcsg::hyperplane<3> splitting_plane( glm::vec3(0), glm::vec3(1,0,0));
+        hyperplane splitting_plane( vec(0), vec(1,0,0));
 
-        glm::vec3 a( 1 ,  0 , 0);
-        glm::vec3 b(-1 ,  1 , 0);
-        glm::vec3 c(-1 , -1 , 0);
+        vec a( 1 ,  0 , 0);
+        vec b(-1 ,  1 , 0);
+        vec c(-1 , -1 , 0);
 
         WHEN("A plane in the yz plane splits the triangle")
         {
-            gcsg::triangle abc{a,b,c};
+            triangle abc{a,b,c};
 
-            std::vector<gcsg::triangle> below, above;
+            std::vector<triangle> below, above;
             abc.split(splitting_plane, below, above);
 
             THEN("The triangle can be split into 3 triangles")
@@ -178,9 +182,9 @@ SCENARIO( "Splitting a Triangle with Hyperplanes 2" ) {
         }
         WHEN("A plane in the yz plane splits the triangle")
         {
-            gcsg::triangle abc{b,c,a};
+            triangle abc{b,c,a};
 
-            std::vector<gcsg::triangle> below, above;
+            std::vector<triangle> below, above;
             abc.split(splitting_plane, below, above);
 
             THEN("The triangle can be split into 3 triangles")
@@ -191,9 +195,9 @@ SCENARIO( "Splitting a Triangle with Hyperplanes 2" ) {
         }
         WHEN("A plane in the yz plane splits the triangle")
         {
-            gcsg::triangle abc{c,a,b};
+            triangle abc{c,a,b};
 
-            std::vector<gcsg::triangle> below, above;
+            std::vector<triangle> below, above;
             abc.split(splitting_plane, below, above);
 
             THEN("The triangle can be split into 3 triangles")
@@ -210,17 +214,17 @@ SCENARIO( "Splitting a Triangle into two sub triangles" ) {
 
     GIVEN( "a hyperplane in the xy plane and a triangle abc" )
     {
-        glm::vec3 a( 1 ,  0 , 0);
-        glm::vec3 b(-1 ,  1 , 0);
-        glm::vec3 c(-1 , -1 , 0);
+        vec a( 1 ,  0 , 0);
+        vec b(-1 ,  1 , 0);
+        vec c(-1 , -1 , 0);
 
-        gcsg::triangle abc{a,b,c};
+        triangle abc{a,b,c};
 
         WHEN("A plane in the yz plane splits the triangle")
         {
-            gcsg::hyperplane<3> splitting_plane( c, glm::normalize(b-a));
+            hyperplane splitting_plane( c, glm::normalize(b-a));
 
-            std::vector<gcsg::triangle> below, above;
+            std::vector<triangle> below, above;
             abc.split(splitting_plane, below, above);
 
             THEN("The triangle can be split into 2 triangles. One inside and one outside")
@@ -251,9 +255,9 @@ SCENARIO( "Splitting a Triangle into two sub triangles" ) {
 
         WHEN("A plane in the yz plane splits the triangle")
         {
-            gcsg::hyperplane<3> splitting_plane( c, glm::normalize(a-b));
+            hyperplane splitting_plane( c, glm::normalize(a-b));
 
-            std::vector<gcsg::triangle> below, above;
+            std::vector<triangle> below, above;
             abc.split(splitting_plane, below, above);
 
             THEN("The triangle can be split into 2 triangles. One inside and one outside")
@@ -284,10 +288,10 @@ SCENARIO( "Splitting a Triangle into two sub triangles" ) {
 
         WHEN("A plane in the yz plane splits the triangle")
         {
-            gcsg::hyperplane<3> splitting_plane( b, glm::normalize(c-a));
+            hyperplane splitting_plane( b, glm::normalize(c-a));
 
 
-            std::vector<gcsg::triangle> below, above;
+            std::vector<triangle> below, above;
             abc.split(splitting_plane, below, above);
 
             THEN("The triangle can be split into 2 triangles. One inside and one outside")
@@ -318,10 +322,10 @@ SCENARIO( "Splitting a Triangle into two sub triangles" ) {
 
         WHEN("A plane in the yz plane splits the triangle")
         {
-            gcsg::hyperplane<3> splitting_plane( b, glm::normalize(a-c));
+            hyperplane splitting_plane( b, glm::normalize(a-c));
 
 
-            std::vector<gcsg::triangle> below, above;
+            std::vector<triangle> below, above;
             abc.split(splitting_plane, below, above);
 
             THEN("The triangle can be split into 2 triangles. One inside and one outside")

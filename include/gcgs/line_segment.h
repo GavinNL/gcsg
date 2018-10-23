@@ -8,9 +8,12 @@
 
 namespace gcsg
 {
+template<typename T>
 class line_segment;
 }
-std::ostream & operator << (std::ostream & out, gcsg::line_segment const & L);
+
+template<typename T>
+std::ostream & operator << (std::ostream & out, gcsg::line_segment<T> const & L);
 
 namespace gcsg
 {
@@ -21,12 +24,14 @@ namespace gcsg
  * A line segment is a line connecting two points
  * in two dimensions.
  */
+template<typename T>
 class line_segment
 {
 public:
-    using plane_type      = hyperplane<2>;
-    using point_type      = vec<2>;
-    using normal_type     = vec<2>;
+    using float_type      = T;
+    using plane_type      = hyperplane<float_type, 2>;
+    using point_type      = vec2<float_type>;
+    using normal_type     = vec2<float_type>;
 
     point_type m_point[2];
 
@@ -133,10 +138,13 @@ public:
 };
 
 
+using line_segment_f = line_segment<float>;
+using line_segment_d = line_segment<double>;
 
 }
 
-inline std::ostream & operator << (std::ostream & out, gcsg::line_segment const & L)
+template<typename T>
+inline std::ostream & operator << (std::ostream & out, gcsg::line_segment<T> const & L)
 {
     out << "(" << L[0].x << "," << L[0].y << ",";
     out << L[1].x << "," << L[1].y << ")";

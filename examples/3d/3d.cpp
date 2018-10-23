@@ -13,13 +13,14 @@
 
 using namespace std;
 
-void print_mesh( gcsg::Tree<3, gcsg::triangle> const & T)
+template<typename T>
+void print_mesh( gcsg::Tree<3, gcsg::triangle<T> > const & tree)
 {
     using namespace gcsg;
 
     printf("solid name\n");
-    T.for_each(
-    [&](triangle & L)
+    tree.for_each(
+    [&](gcsg::triangle<T> & L)
     {
         auto n = L.get_hyperplane().normal();
         auto & v1 = L[0];
@@ -42,22 +43,23 @@ void print_mesh( gcsg::Tree<3, gcsg::triangle> const & T)
 
 int main()
 {
-    using namespace gcsg;
+    using triangle = gcsg::triangle<double>;
+    using vec = gcsg::vec3<double>;
 
-    Tree<3, triangle> S1;
-    Tree<3, triangle> S2;
-    Tree<3, triangle> S3;
-    Tree<3, triangle> S4;
-    Tree<3, triangle> S5;
+    gcsg::Tree<3, triangle> S1;
+    gcsg::Tree<3, triangle> S2;
+    gcsg::Tree<3, triangle> S3;
+    gcsg::Tree<3, triangle> S4;
+    gcsg::Tree<3, triangle> S5;
   //  Tree<3, triangle> S6;
 
-    auto B1 = geo3d::box_mesh( vec3(2,2,2), vec3(0));
+    auto B1 = gcsg::geo3d::box_mesh( vec(2,2,2), vec(0));
 
-    auto B5 = geo3d::box_mesh( vec3(2,2,2), vec3(1));
+    auto B5 = gcsg::geo3d::box_mesh( vec(2,2,2), vec(1));
 
-    auto B2 = geo3d::box_mesh( vec3(1,4,1), vec3(0));
-    auto B3 = geo3d::box_mesh( vec3(4,1,1), vec3(0));
-    auto B4 = geo3d::box_mesh( vec3(1,1,4), vec3(0));
+    auto B2 = gcsg::geo3d::box_mesh( vec(1,4,1), vec(0));
+    auto B3 = gcsg::geo3d::box_mesh( vec(4,1,1), vec(0));
+    auto B4 = gcsg::geo3d::box_mesh( vec(1,1,4), vec(0));
 
 
 

@@ -11,9 +11,10 @@ namespace gcsg
 struct geo2d
 {
 
-    static std::vector<gcsg::line_segment> get_circle(float R, glm::vec2 offset = glm::vec2(0,0), uint32_t N=10)
+    template<typename T=float>
+    static std::vector<gcsg::line_segment<T> > get_circle(T R, gcsg::vec2<T> offset = gcsg::vec2<T>(0,0), uint32_t N=10)
     {
-        std::vector<gcsg::line_segment> b;
+        std::vector<gcsg::line_segment<T> > b;
         float t = 0.0;
         float dt = 3.141592653589f * 2.0f / static_cast<float>(N);
         for(uint32_t i=0;i<N;i++)
@@ -23,20 +24,21 @@ struct geo2d
 
             auto c2  =  R * std::cos(t + dt);
             auto s2  =  R * std::sin(t + dt);
-            b.push_back( { glm::vec2{c2, s2}+offset, glm::vec2{c, s}+offset} );
+            b.push_back( { gcsg::vec2<T>{c2, s2}+offset, gcsg::vec2<T>{c, s}+offset} );
             t += dt;
         }
         return b;
     }
 
 
-    static std::vector<gcsg::line_segment> get_box(float s, glm::vec2 offset = glm::vec2(0,0))
+    template<typename T=float>
+    static std::vector<gcsg::line_segment<T>> get_box(float s, gcsg::vec2<T> offset = gcsg::vec2<T>(0,0))
     {
-        std::vector<gcsg::line_segment> b;
-        b.push_back( { glm::vec2{-1, 1}, glm::vec2{1, 1}} );
-        b.push_back( { glm::vec2{ 1, 1}, glm::vec2{1,-1}} );
-        b.push_back( { glm::vec2{ 1,-1}, glm::vec2{-1,-1}} );
-        b.push_back( { glm::vec2{-1,-1}, glm::vec2{-1, 1}} );
+        std::vector<gcsg::line_segment<T> > b;
+        b.push_back( { gcsg::vec2<T>{-1, 1}, gcsg::vec2<T>{1, 1}} );
+        b.push_back( { gcsg::vec2<T>{ 1, 1}, gcsg::vec2<T>{1,-1}} );
+        b.push_back( { gcsg::vec2<T>{ 1,-1}, gcsg::vec2<T>{-1,-1}} );
+        b.push_back( { gcsg::vec2<T>{-1,-1}, gcsg::vec2<T>{-1, 1}} );
         for(auto & l : b)
         {
             l[0] *= s;

@@ -15,7 +15,7 @@
 namespace gcsg
 {
 
-#define EPSILON 1e-6
+#define GCSG_EPSILON  std::numeric_limits<float_type>::epsilon()
 
 
 
@@ -28,8 +28,11 @@ public:
     using plane_type = plane_t;  //  plane              line
     using point_type = point_t;
 
+    using float_type = typename face_type::float_type;
+
     face_type  m_face;
     plane_type m_plane;
+
 
     Node()
     {}
@@ -71,6 +74,7 @@ public:
     using plane_type = typename face_t::plane_type;  //  plane              line
     using point_type = typename face_t::point_type;
 
+    using float_type = typename face_type::float_type;
     using tree_type = Tree<N, face_t>;
     using node_type = Node<face_type, plane_type, point_type>;
 
@@ -131,17 +135,18 @@ public:
     static bool is_partitioned(node_type * n,  face_type const & T)
     {
         // Distance between point and plane
-        std::array<float, N> f;
+        std::array<float_type, N> f;
 
         int32_t i=0;
         int count=0;
 
         auto & plane = n->m_plane;
 
+
         for(auto & _f : f)
         {
             _f = plane.distance( T[i++]);
-            if (fabs(_f) < EPSILON ) _f = 0.0f;
+            if ( std::fabs(_f) < GCSG_EPSILON ) _f = float_type(0.0L);
 
             count += _f <= 0;
         }
@@ -165,7 +170,7 @@ public:
     static face_type partitioning_face(node_type * n, face_type const & T)
     {
         // Distance between point and plane
-        std::array<float, N> f;
+        std::array<float_type, N> f;
 
         int32_t i=0;
         int count=0;
@@ -175,7 +180,7 @@ public:
         for(auto & _f : f)
         {
             _f = plane.distance( T[i++]);
-            if (fabs(_f) < EPSILON ) _f = 0.0f;
+            if ( std::fabs(_f) < GCSG_EPSILON ) _f = float_type(0.0L);
 
             count += _f <= 0;
         }
@@ -345,7 +350,7 @@ protected:
         auto & plane = n->m_plane;
 
         // Distance between point and plane
-        std::array<float, N> f;
+        std::array<float_type, N> f;
 
         int32_t i=0;
         bool all_inside  = true;
@@ -354,7 +359,7 @@ protected:
         for(auto & _f : f)
         {
             _f = plane.distance( T[i++]);
-            if (fabs(_f) < EPSILON ) _f = 0.0f;
+            if ( std::fabs(_f) < GCSG_EPSILON ) _f = float_type(0.0L);
 
             all_inside  &= _f <= 0;
             all_outside &= _f >= 0;
@@ -426,7 +431,7 @@ auto log = get_logger();
         auto & plane = n->m_plane;
 
         // Distance between point and plane
-        std::array<float, N> f;
+        std::array<float_type, N> f;
 
         int32_t i=0;
         bool all_inside  = true;
@@ -435,7 +440,7 @@ auto log = get_logger();
         for(auto & _f : f)
         {
             _f = plane.distance( T[i++]);
-            if (fabs(_f) < EPSILON ) _f = 0.0f;
+            if ( std::fabs(_f) < GCSG_EPSILON ) _f = float_type(0.0L);
 
             all_inside  &= _f <= 0;
             all_outside &= _f >= 0;
