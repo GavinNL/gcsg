@@ -10,9 +10,10 @@
 
 #include "geometry_tests.h"
 
-using vec = gcsg::vec3<float>;
-using triangle = gcsg::triangle<float>;
-using hyperplane = gcsg::hyperplane<float,3>;
+using value_type = float;
+using vec = gcsg::vec3<value_type>;
+using triangle = gcsg::triangle<value_type>;
+using hyperplane = gcsg::hyperplane<value_type,3>;
 
 SCENARIO( "Triangle Hyperplanes" ) {
 

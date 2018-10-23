@@ -7,8 +7,9 @@
 
 #include <gcgs/line_segment.h>
 
-using line_segment = gcsg::line_segment<float>;
-using vec          = gcsg::vec2<float>;
+using value_type   = float;
+using line_segment = gcsg::line_segment<value_type>;
+using vec          = gcsg::vec2<value_type>;
 
 bool equal_points(vec const &a, vec const & b)
 {
