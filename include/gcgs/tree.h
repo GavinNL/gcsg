@@ -15,7 +15,7 @@
 namespace gcsg
 {
 
-#define EPSILON 1e-6
+#define GCSG_EPSILON  std::numeric_limits<float_type>::epsilon()
 
 
 
@@ -142,10 +142,11 @@ public:
 
         auto & plane = n->m_plane;
 
+
         for(auto & _f : f)
         {
             _f = plane.distance( T[i++]);
-            if (fabs(_f) < EPSILON ) _f = 0.0f;
+            if ( std::fabs(_f) < GCSG_EPSILON ) _f = float_type(0.0L);
 
             count += _f <= 0;
         }
@@ -179,7 +180,7 @@ public:
         for(auto & _f : f)
         {
             _f = plane.distance( T[i++]);
-            if (fabs(_f) < EPSILON ) _f = 0.0f;
+            if ( std::fabs(_f) < GCSG_EPSILON ) _f = float_type(0.0L);
 
             count += _f <= 0;
         }
@@ -358,7 +359,7 @@ protected:
         for(auto & _f : f)
         {
             _f = plane.distance( T[i++]);
-            if (fabs(_f) < EPSILON ) _f = 0.0f;
+            if ( std::fabs(_f) < GCSG_EPSILON ) _f = float_type(0.0L);
 
             all_inside  &= _f <= 0;
             all_outside &= _f >= 0;
@@ -439,7 +440,7 @@ auto log = get_logger();
         for(auto & _f : f)
         {
             _f = plane.distance( T[i++]);
-            if (fabs(_f) < EPSILON ) _f = 0.0f;
+            if ( std::fabs(_f) < GCSG_EPSILON ) _f = float_type(0.0L);
 
             all_inside  &= _f <= 0;
             all_outside &= _f >= 0;
