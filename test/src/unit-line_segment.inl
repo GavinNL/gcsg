@@ -7,9 +7,9 @@
 
 #include <gcgs/line_segment.h>
 
-using value_type   = float;
-using line_segment = gcsg::line_segment<value_type>;
-using vec          = gcsg::vec2<value_type>;
+
+using line_segment = gcsg::line_segment<test_value_type>;
+using vec          = gcsg::vec2<test_value_type>;
 
 bool equal_points(vec const &a, vec const & b)
 {
@@ -84,7 +84,7 @@ SCENARIO( "Local tests" )
         line_segment ab{ a, b }; // the normal will always be the vector from point a to point b, rotated 90 counter-clockwisse
         line_segment ba{ b, a };
 
-        line_segment AB{ 2.f*a, 2.f*b }; // the normal will always be the vector from point a to point b, rotated 90 counter-clockwisse
+        line_segment AB{ test_value_type(2)*a, test_value_type(2)*b }; // the normal will always be the vector from point a to point b, rotated 90 counter-clockwisse
 
         REQUIRE( are_antiparallel(ab,ba) );
         REQUIRE( are_parallel(ab,AB) );

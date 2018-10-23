@@ -9,10 +9,9 @@
 
 #include "geometry_tests.h"
 
-using value_type = float;
-using vec = gcsg::vec3<value_type>;
-using triangle = gcsg::triangle<value_type>;
-using hyperplane = gcsg::hyperplane<value_type,3>;
+using vec = gcsg::vec3<test_value_type>;
+using triangle = gcsg::triangle<test_value_type>;
+using hyperplane = gcsg::hyperplane<test_value_type,3>;
 
 SCENARIO( "Local Tests" )
 {

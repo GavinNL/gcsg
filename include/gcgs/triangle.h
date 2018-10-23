@@ -67,7 +67,7 @@ public:
         const auto v1 = m_point[1] - m_point[0];
         const auto v2 = m_point[2] - m_point[0];
         const auto n = glm::cross(v1,v2);
-        return glm::length(n) * 2.0f;
+        return glm::length(n) * float_type(0.5);
     }
 
     triangle invert() const

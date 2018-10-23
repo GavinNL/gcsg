@@ -59,14 +59,14 @@ gcsg::vec3<T> missing_point(gcsg::triangle<T> const & abc, gcsg::vec3<T> const &
 template<typename T>
 bool are_coplanar(gcsg::triangle<T> const & T1, gcsg::triangle<T> const & T2)
 {
-    return glm::length(T1.get_hyperplane().normal() - T2.get_hyperplane().normal()) == Catch::Detail::Approx(0.0f);
+    return glm::length( glm::normalize(T1.get_hyperplane().normal()) - glm::normalize(T2.get_hyperplane().normal()) ) == Catch::Detail::Approx( T(0.0) );
 }
 
 // two triangles are antiplanar if their normals are negatives of each other
 template<typename T>
 bool are_antiplanar(gcsg::triangle<T> const & T1, gcsg::triangle<T> const & T2)
 {
-    return glm::length(T1.get_hyperplane().normal() + T2.get_hyperplane().normal()) == Catch::Detail::Approx(0.0f);
+    return glm::length(T1.get_hyperplane().normal() + T2.get_hyperplane().normal()) == Catch::Detail::Approx( T(0.0) );
 }
 
 #endif
